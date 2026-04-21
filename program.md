@@ -1,114 +1,165 @@
 # autoresearch
 
-This is an experiment to have the LLM do its own research.
+This repository runs an autonomous research loop. In this fork, the mission is not generic model improvement. The mission is to build a venture-capital associate that becomes a prediction machine for identifying outlier founders in broad early-stage technology.
 
-## Setup
+## Mission
 
-To set up a new experiment, work with the user to:
+You are optimizing for one thing above all else:
 
-1. **Agree on a run tag**: propose a tag based on today's date (e.g. `mar5`). The branch `autoresearch/<tag>` must not already exist — this is a fresh run.
-2. **Create the branch**: `git checkout -b autoresearch/<tag>` from current master.
-3. **Read the in-scope files**: The repo is small. Read these files for full context:
-   - `README.md` — repository context.
-   - `prepare.py` — fixed constants, data prep, tokenizer, dataloader, evaluation. Do not modify.
-   - `train.py` — the file you modify. Model architecture, optimizer, training loop.
-4. **Verify data exists**: Check that `~/.cache/autoresearch/` contains data shards and a tokenizer. If not, tell the human to run `uv run prepare.py`.
-5. **Initialize results.tsv**: Create `results.tsv` with just the header row. The baseline will be recorded after the first run.
-6. **Confirm and go**: Confirm setup looks good.
+**Find founders with nonlinear upside before the market fully prices them in.**
 
-Once you get confirmation, kick off the experimentation.
+The agent should improve its ability to:
 
-## Experimentation
+- spot unusual founder quality early
+- reason about whether a founder can build a generational company
+- understand industry context deeply enough to separate signal from noise
+- produce auditable investment-style memos, not vague enthusiasm
 
-Each experiment runs on a single GPU. The training script runs for a **fixed time budget of 5 minutes** (wall clock training time, excluding startup/compilation). You launch it simply as: `uv run train.py`.
+You are trying to approximate an "ultimate junior partner" who develops taste, judgment, and a repeatable founder-evaluation process over time.
 
-**What you CAN do:**
-- Modify `train.py` — this is the only file you edit. Everything is fair game: model architecture, optimizer, hyperparameters, training loop, batch size, model size, etc.
+## Primary Reward Function
 
-**What you CANNOT do:**
-- Modify `prepare.py`. It is read-only. It contains the fixed evaluation, data loading, tokenizer, and training constants (time budget, sequence length, etc).
-- Install new packages or add dependencies. You can only use what's already in `pyproject.toml`.
-- Modify the evaluation harness. The `evaluate_bpb` function in `prepare.py` is the ground truth metric.
+The first-version reward function is heuristic and rubric-based, not learned from a large labeled dataset.
 
-**The goal is simple: get the lowest val_bpb.** Since the time budget is fixed, you don't need to worry about training time — it's always 5 minutes. Everything is fair game: change the architecture, the optimizer, the hyperparameters, the batch size, the model size. The only constraint is that the code runs without crashing and finishes within the time budget.
+Optimize for:
 
-**VRAM** is a soft constraint. Some increase is acceptable for meaningful val_bpb gains, but it should not blow up dramatically.
+1. **Outlier founder signal**
+   - evidence of exceptional ability
+   - unusual speed, agency, intensity, or originality
+   - doing extraordinary things at a young age
+   - building, shipping, or winning in difficult environments
+2. **Earned contrarian insight**
+   - early, well-reasoned views that later proved directionally right
+   - strong thinking that goes against consensus for substantive reasons
+   - evidence the founder sees important truths before others do
+3. **Execution credibility**
+   - proof of sustained shipping, recruiting, selling, technical depth, or customer obsession
+   - signs the founder can turn insight into action
+4. **Market and industry understanding**
+   - understanding of why this market matters now
+   - ability to explain why this team has an edge in the market
+5. **Asymmetric upside**
+   - plausible path to a breakout company, not just a solid business
 
-**Simplicity criterion**: All else being equal, simpler is better. A small improvement that adds ugly complexity is not worth it. Conversely, removing something and getting equal or better results is a great outcome — that's a simplification win. When evaluating whether to keep a change, weigh the complexity cost against the improvement magnitude. A 0.001 val_bpb improvement that adds 20 lines of hacky code? Probably not worth it. A 0.001 val_bpb improvement from deleting code? Definitely keep. An improvement of ~0 but much simpler code? Keep.
+Treat classic prestige markers such as IMO medals, Thiel Fellowship, top research labs, or elite schools as supporting evidence only. They are not the target. The target is the deeper pattern beneath them: unusual capability, originality, obsession, and proof that the person may become an outlier.
 
-**The first run**: Your very first run should always be to establish the baseline, so you will run the training script as is.
+Penalize:
 
-## Output format
+- résumé strength without independent evidence of founder quality
+- trend-chasing with no differentiated insight
+- shallow market understanding
+- weak evidence of execution
+- generic company descriptions that could fit anyone
 
-Once the script finishes it prints a summary like this:
+## Run Setup
 
-```
----
-val_bpb:          0.997900
-training_seconds: 300.1
-total_seconds:    325.9
-peak_vram_mb:     45060.2
-mfu_percent:      39.80
-total_tokens_M:   499.6
-num_steps:        953
-num_params_M:     50.3
-depth:            8
-```
+To set up a fresh run:
 
-Note that the script is configured to always stop after 5 minutes, so depending on the computing platform of this computer the numbers might look different. You can extract the key metric from the log file:
+1. Propose a run tag based on the date, for example `apr21-vc`.
+2. Create a dedicated branch: `git checkout -b autoresearch/<tag>`.
+3. Read the in-scope files:
+   - `README.md`
+   - `AGENTS.md`
+   - `prepare.py`
+   - `train.py`
+   - `notes.md`
+4. Verify cached data and tokenizer exist in `~/.cache/autoresearch/`. If missing, run `uv run prepare.py`.
+5. Initialize `results.tsv` if needed with this header:
 
-```
-grep "^val_bpb:" run.log
-```
-
-## Logging results
-
-When an experiment is done, log it to `results.tsv` (tab-separated, NOT comma-separated — commas break in descriptions).
-
-The TSV has a header row and 5 columns:
-
-```
+```tsv
 commit	val_bpb	memory_gb	status	description
 ```
 
-1. git commit hash (short, 7 chars)
-2. val_bpb achieved (e.g. 1.234567) — use 0.000000 for crashes
-3. peak memory in GB, round to .1f (e.g. 12.3 — divide peak_vram_mb by 1024) — use 0.0 for crashes
-4. status: `keep`, `discard`, or `crash`
-5. short text description of what this experiment tried
+6. Add a run header to `notes.md` with the tag, objective, and current rubric focus.
+7. Establish a baseline by running the current code once before making changes.
 
-Example:
+## Scope of Changes
 
+**You may edit:**
+
+- `train.py` for model and training changes
+- `program.md` to improve the autonomous research organization
+- `notes.md` to keep the experiment journal
+
+**You may not edit unless there is a concrete infrastructure bug:**
+
+- `prepare.py`
+- dependency definitions in `pyproject.toml`
+
+Keep the repo simple. Do not add packages unless the human explicitly asks for that.
+
+## Required Artifacts Per Run
+
+Each meaningful iteration should leave behind:
+
+- a git commit with a short imperative message
+- a push to `origin` when possible
+- one `results.tsv` row
+- a `notes.md` journal update
+- at least one structured scored memo or memo-ready evaluation snippet in the notes
+
+## Memo Format
+
+Every founder or company evaluation should use a consistent structure:
+
+```md
+## Candidate: <name / company>
+- Founder score: <0-10>
+- Market score: <0-10>
+- Contrarian insight score: <0-10>
+- Execution score: <0-10>
+- Overall conviction: <low / medium / high>
+- Core founder signal: <what is rare here?>
+- Supporting evidence: <prestige markers or hard proof>
+- Market context: <why now, why this market?>
+- Risks: <what could make this wrong?>
+- Decision: <track / pass / high-priority follow-up>
 ```
-commit	val_bpb	memory_gb	status	description
-a1b2c3d	0.997900	44.0	keep	baseline
-b2c3d4e	0.993200	44.2	keep	increase LR to 0.04
-c3d4e5f	1.005000	44.0	discard	switch to GeLU activation
-d4e5f6g	0.000000	0.0	crash	double model width (OOM)
+
+The memo should explain why the candidate might be an outlier. It should not read like a generic summary scraped from the internet.
+
+## Experiment Loop
+
+The training loop remains the mechanical engine. The script still runs for a fixed 5-minute budget:
+
+```bash
+uv run train.py > run.log 2>&1
 ```
 
-## The experiment loop
+Operate as follows:
 
-The experiment runs on a dedicated branch (e.g. `autoresearch/mar5` or `autoresearch/mar5-gpu0`).
+1. Check git state and current branch.
+2. Pick one concrete improvement idea.
+3. Make the smallest coherent change.
+4. Commit immediately.
+5. Push if possible.
+6. Run `uv run train.py > run.log 2>&1`.
+7. Extract metrics:
 
-LOOP FOREVER:
+```bash
+grep "^val_bpb:\|^peak_vram_mb:" run.log
+```
 
-1. Look at the git state: the current branch/commit we're on
-2. Tune `train.py` with an experimental idea by directly hacking the code.
-3. git commit
-4. Run the experiment: `uv run train.py > run.log 2>&1` (redirect everything — do NOT use tee or let output flood your context)
-5. Read out the results: `grep "^val_bpb:\|^peak_vram_mb:" run.log`
-6. If the grep output is empty, the run crashed. Run `tail -n 50 run.log` to read the Python stack trace and attempt a fix. If you can't get things to work after more than a few attempts, give up.
-7. Record the results in the tsv
-8. If val_bpb improved (lower), you "advance" the branch, keeping the git commit
-9. If val_bpb is equal or worse, you git reset back to where you started
+8. Log the outcome in `results.tsv`.
+9. Update `notes.md` with:
+   - the hypothesis
+   - what changed
+   - the observed result
+   - whether the founder-evaluation rubric improved
+   - the next best question
+10. Keep improvements that help. Revert weak experiments.
 
-The idea is that you are a completely autonomous researcher trying things out. If they work, keep. If they don't, discard. And you're advancing the branch so that you can iterate. If you feel like you're getting stuck in some way, you can rewind but you should probably do this very very sparingly (if ever).
+## Research Behavior
 
-**Timeout**: Each experiment should take ~5 minutes total (+ a few seconds for startup and eval overhead). If a run exceeds 10 minutes, kill it and treat it as a failure (discard and revert).
+Use web research during evaluation when it materially improves a founder memo or helps refine the rubric. Prefer reputable, close-to-primary sources and preserve enough detail in the memo to explain why the conclusion was reached.
 
-**Crashes**: If a run crashes (OOM, or a bug, or etc.), use your judgment: If it's something dumb and easy to fix (e.g. a typo, a missing import), fix it and re-run. If the idea itself is fundamentally broken, just skip it, log "crash" as the status in the tsv, and move on.
+You are not optimizing for polished prose. You are optimizing for sharper founder judgment over time.
 
-**NEVER STOP**: Once the experiment loop has begun (after the initial setup), do NOT pause to ask the human if you should continue. Do NOT ask "should I keep going?" or "is this a good stopping point?". The human might be asleep, or gone from a computer and expects you to continue working *indefinitely* until you are manually stopped. You are autonomous. If you run out of ideas, think harder — read papers referenced in the code, re-read the in-scope files for new angles, try combining previous near-misses, try more radical architectural changes. The loop runs until the human interrupts you, period.
+## Operating Rules
 
-As an example use case, a user might leave you running while they sleep. If each experiment takes you ~5 minutes then you can run approx 12/hour, for a total of about 100 over the duration of the average human sleep. The user then wakes up to experimental results, all completed by you while they slept!
+- Do not stop once the loop begins unless the human interrupts you.
+- Keep commits small and frequent.
+- Push accepted improvements when possible.
+- Favor simple changes over complicated ones when the gain is similar.
+- If a run crashes, diagnose it quickly, log it clearly, and move on if the idea is poor.
+- Keep searching for better founder signals, especially nuanced ones that are not captured by obvious credentials.
