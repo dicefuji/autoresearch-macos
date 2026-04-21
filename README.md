@@ -43,6 +43,20 @@ uv run train.py
 
 If the above commands all work ok, your setup is working and you can go into autonomous research mode.
 
+## Unattended runs
+
+The core training script is only the 5-minute experiment engine. The long-running autonomous loop still needs an operator: either a live coding agent or an explicit driver that runs queued experiments for hours.
+
+This repo now includes a queue-driven driver:
+
+```bash
+mkdir -p queue
+cp queue/experiments.example.json queue/experiments.json
+./.venv/bin/python scripts/run_autoresearch.py --hours 4 --push
+```
+
+The driver will apply queued `train.py` edits, commit them, optionally push them, run training, parse `run.log`, append `results.tsv`, update `notes.md`, and keep or revert each experiment based on `val_bpb`.
+
 **Platforms support**. This fork officially supports **macOS (Apple Silicon / MPS)** and CPU environments, while preserving the original NVIDIA GPU support. It removes the hardcoded dependency on FlashAttention-3, falling back to PyTorch's native Scaled Dot Product Attention (SDPA) with manual sliding window causal masking when needed. It also features MPS-specific optimizations (disabling unsupported `torch.compile` paths, lowering memory batch sizes for Metal bounds, and precisely casting optimizer states) allowing you to run autonomous research agents directly on your Mac!
 
 ## Running the agent

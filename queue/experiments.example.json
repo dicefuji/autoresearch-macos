@@ -1,0 +1,26 @@
+[
+  {
+    "commit_message": "Reduce model depth for faster iteration",
+    "description": "drop depth from 4 to 3 to improve experiments per hour on MPS",
+    "hypothesis": "smaller depth may reduce wall-clock more than it hurts val_bpb on this machine",
+    "next_move": "if this loses badly, revert and try a shorter sequence length instead",
+    "replacements": [
+      {
+        "old": "DEPTH = 4               # number of transformer layers",
+        "new": "DEPTH = 3               # number of transformer layers"
+      }
+    ]
+  },
+  {
+    "commit_message": "Reduce device batch size for MPS stability",
+    "description": "lower device batch size from 16 to 8 to improve step consistency on MPS",
+    "hypothesis": "smaller per-device batches may reduce MPS stalls even if total batch stays fixed",
+    "next_move": "if throughput regresses, restore the original per-device batch size",
+    "replacements": [
+      {
+        "old": "DEVICE_BATCH_SIZE = 16  # per-device batch size (reduce if OOM)",
+        "new": "DEVICE_BATCH_SIZE = 8   # per-device batch size (reduce if OOM)"
+      }
+    ]
+  }
+]
