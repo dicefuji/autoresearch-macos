@@ -1,1 +1,2 @@
 commit	val_bpb	memory_gb	status	description
+df3e588	2.095573	0.0	keep	baseline on M1 Pro; evaluation dominates wall-clock

@@ -10,8 +10,8 @@ This file is the running journal for the VC-associate autoresearch loop. Update 
 - Tag: `apr21-vc`
 - Date: `2026-04-21`
 - Objective: Build a venture-capital associate that improves at spotting outlier founders in broad early-stage tech.
-- Current best commit: pending baseline
-- Current best `val_bpb`: pending baseline
+- Current best commit: `df3e588`
+- Current best `val_bpb`: `2.095573`
 
 ### Current Founder Rubric
 - Core founder signals to test: unusual ability, originality, speed, obsession, earned contrarian insight, execution proof
@@ -21,11 +21,11 @@ This file is the running journal for the VC-associate autoresearch loop. Update 
 
 ### Latest Experiment
 - Hypothesis: the baseline run will establish the runtime and starting quality envelope for later prompt and model iterations
-- Change made: initialized `autoresearch/apr21-vc`, set up run bookkeeping, baseline pending
-- Result: pending baseline
+- Change made: initialized `autoresearch/apr21-vc`, ran the untouched baseline on M1 Pro / MPS
+- Result: `val_bpb 2.095573`, `training_seconds 316.7`, `total_seconds 1233.9`, `num_steps 17`
 - Keep or discard: keep
-- What this taught us about founder prediction: pending baseline
-- Next move: run baseline, record metrics, then evaluate the first low-complexity improvement
+- What this taught us about founder prediction: before chasing rubric quality, this setup needs much better experiments-per-hour; evaluation overhead currently dominates the overnight loop
+- Next move: test a lower total batch size to reduce accumulation and improve iteration speed without changing the evaluation harness
 
 ## Active Run Template
 
