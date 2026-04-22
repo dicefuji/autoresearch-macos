@@ -194,3 +194,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: the best run may benefit from much calmer scalar updates under the fixed budget
 - Next move: if this is too slow, keep the original scalar LR
+
+## Driver Run: 2026-04-22T01:47:07
+- Commit: `cfc7f96`
+- Experiment: lower UNEMBEDDING_LR from 0.004 to 0.003 on the current best checkpoint
+- Status: discard
+- Log: `004-cfc7f96.log`
+- val_bpb: `1.639387`
+- training_seconds: `300.8`
+- total_seconds: `558.0`
+- memory_gb: `0.0`
+- Hypothesis: the lm_head may converge better with a slightly smaller Adam step
+- Next move: if there is no movement, unembedding LR is probably not the main bottleneck
