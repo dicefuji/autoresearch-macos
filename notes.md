@@ -458,3 +458,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: higher starting momentum may help even in early steps; combined with faster warmup
 - Next move: if worse than the 80-step warmup alone, the 0.85 start is intentional
+
+## Driver Run: 2026-04-22T16:18:51
+- Commit: `cbafe4f`
+- Experiment: raise FINAL_LR_FRAC from 0.0 to 0.1 so LR decays to 10% of peak rather than 0
+- Status: discard
+- Log: `003-cbafe4f.log`
+- val_bpb: `1.680585`
+- training_seconds: `308.3`
+- total_seconds: `578.1`
+- memory_gb: `0.0`
+- Hypothesis: fully zeroing the LR at the end of the 5-min budget may cause abrupt loss of progress; ending at 10% may smooth convergence
+- Next move: if better, try 0.05; if worse, 0.0 is correct for this budget

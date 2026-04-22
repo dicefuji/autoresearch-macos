@@ -34,3 +34,4 @@ b29ad6b	1.647907	0.0	discard	raise ADAM_BETAS beta1 from 0.8 to 0.85
 9c2c026	1.684874	0.0	discard	increase ns_steps from 5 to 6 in the MuonAdamW optimizer call
 9d88d86	2.058078	0.0	discard	change get_muon_momentum warmup from 300 steps to 80 steps so momentum reaches 0.95 before cooldown
 d54a1d8	1.684748	0.0	discard	change get_muon_momentum to warm from 0.90 to 0.95 over 80 steps instead of 0.85 to 0.95 over 300
+cbafe4f	1.680585	0.0	discard	raise FINAL_LR_FRAC from 0.0 to 0.1 so LR decays to 10% of peak rather than 0
