@@ -350,3 +350,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 0.5->0.4->0.30 all improved; continuing the trend may still help
 - Next move: if better, try 0.20; if worse, 0.30 is the sweet spot
+
+## Driver Run: 2026-04-22T14:39:25
+- Commit: `6a5edd3`
+- Experiment: set WARMDOWN_RATIO from 0.30 to 0.20
+- Status: discard
+- Log: `002-6a5edd3.log`
+- val_bpb: `1.809597`
+- training_seconds: `301.7`
+- total_seconds: `1165.8`
+- memory_gb: `0.0`
+- Hypothesis: more time at peak LR may still improve val_bpb if the model is not yet overfitting
+- Next move: if worse than 0.25 but better than 0.30, settle at 0.25

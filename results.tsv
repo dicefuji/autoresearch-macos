@@ -25,3 +25,4 @@ eb2bbb9	1.878980	0.0	discard	raise UNEMBEDDING_LR from 0.005 to 0.006
 a2063d0	1.625393	0.0	discard	raise MATRIX_LR from 0.03 to 0.032
 7f4c7f4	1.677571	0.0	discard	lower WEIGHT_DECAY from 0.2 to 0.15 on the updated best checkpoint
 c8cca1b	2.062247	0.0	discard	set WARMDOWN_RATIO from 0.30 to 0.25
+6a5edd3	1.809597	0.0	discard	set WARMDOWN_RATIO from 0.30 to 0.20
