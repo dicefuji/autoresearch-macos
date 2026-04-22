@@ -314,3 +314,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 0.005 helped vs 0.004; lm_head may still benefit from a slightly larger Adam step
 - Next move: if worse, 0.005 is the sweet spot for unembedding
+
+## Driver Run: 2026-04-22T11:14:10
+- Commit: `a2063d0`
+- Experiment: raise MATRIX_LR from 0.03 to 0.032
+- Status: discard
+- Log: `007-a2063d0.log`
+- val_bpb: `1.625393`
+- training_seconds: `300.3`
+- total_seconds: `565.5`
+- memory_gb: `0.0`
+- Hypothesis: with calmer scalar/embedding/warmdown, Muon may benefit from a slightly larger step to match the new regime
+- Next move: if worse, keep 0.03; lowering was clearly bad so up is worth a try
