@@ -482,3 +482,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: linear decay may cut LR too fast early in cooldown; a squared schedule keeps more LR budget until near the end
 - Next move: if worse, linear is fine; if better, try cooldown**1.5 for a middle ground
+
+## Driver Run: 2026-04-22T16:39:18
+- Commit: `a13c37e`
+- Experiment: raise Muon beta2 from 0.95 to 0.98 for slower variance adaptation
+- Status: discard
+- Log: `005-a13c37e.log`
+- val_bpb: `1.686451`
+- training_seconds: `324.9`
+- total_seconds: `604.2`
+- memory_gb: `0.0`
+- Hypothesis: 0.95 adapts step sizes very quickly; 0.98 gives a more stable estimate over the ~110 training steps
+- Next move: if worse, fast variance adaptation is beneficial for this short budget
