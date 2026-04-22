@@ -362,3 +362,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: more time at peak LR may still improve val_bpb if the model is not yet overfitting
 - Next move: if worse than 0.25 but better than 0.30, settle at 0.25
+
+## Driver Run: 2026-04-22T14:49:45
+- Commit: `b29ad6b`
+- Experiment: raise ADAM_BETAS beta1 from 0.8 to 0.85
+- Status: discard
+- Log: `003-b29ad6b.log`
+- val_bpb: `1.647907`
+- training_seconds: `301.3`
+- total_seconds: `611.9`
+- memory_gb: `0.0`
+- Hypothesis: more momentum in Adam may help embedding/unembedding convergence in the fixed budget
+- Next move: if better, try 0.90; if worse, 0.8 is correct
