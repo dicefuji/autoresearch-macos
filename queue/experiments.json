@@ -1,117 +1,97 @@
 [
   {
-    "commit_message": "Lower matrix LR further",
-    "description": "lower MATRIX_LR from 0.03 to 0.025 on the current best checkpoint",
-    "hypothesis": "the depth-3 model may still be slightly overstepping in the matrix group",
-    "next_move": "if this degrades sharply, matrix LR is probably already near the sweet spot",
+    "commit_message": "Shorten warmdown further to 0.35",
+    "description": "set WARMDOWN_RATIO from 0.4 to 0.35 — more steps at peak LR",
+    "hypothesis": "0.4 helped; 0.35 gives even more peak-LR time in the 5-min budget",
+    "next_move": "if better, try 0.3; if worse, 0.4 is the sweet spot",
     "replacements": [
       {
-        "old": "MATRIX_LR = 0.03        # learning rate for matrix parameters (Muon)",
-        "new": "MATRIX_LR = 0.025       # learning rate for matrix parameters (Muon)"
+        "old": "WARMDOWN_RATIO = 0.4    # fraction of time budget for LR warmdown",
+        "new": "WARMDOWN_RATIO = 0.35   # fraction of time budget for LR warmdown"
       }
     ]
   },
   {
-    "commit_message": "Lower scalar LR slightly",
-    "description": "lower SCALAR_LR from 0.35 to 0.30 on the current best checkpoint",
-    "hypothesis": "per-layer scalars may still be moving too aggressively early in the run",
-    "next_move": "if this helps, try a more conservative scalar LR after restoring the best run",
+    "commit_message": "Shorten warmdown further to 0.3",
+    "description": "set WARMDOWN_RATIO from 0.4 to 0.30",
+    "hypothesis": "model may benefit from spending even less time in cooldown",
+    "next_move": "if worse than 0.35 experiment, stop here",
     "replacements": [
       {
-        "old": "SCALAR_LR = 0.35        # learning rate for per-layer scalars (Adam)",
-        "new": "SCALAR_LR = 0.30        # learning rate for per-layer scalars (Adam)"
+        "old": "WARMDOWN_RATIO = 0.4    # fraction of time budget for LR warmdown",
+        "new": "WARMDOWN_RATIO = 0.30   # fraction of time budget for LR warmdown"
       }
     ]
   },
   {
-    "commit_message": "Lower scalar LR further",
-    "description": "lower SCALAR_LR from 0.35 to 0.25 on the current best checkpoint",
-    "hypothesis": "the best run may benefit from much calmer scalar updates under the fixed budget",
-    "next_move": "if this is too slow, keep the original scalar LR",
+    "commit_message": "Lower scalar LR to 0.20",
+    "description": "lower SCALAR_LR from 0.25 to 0.20",
+    "hypothesis": "the downward trend in scalar LR may continue to help",
+    "next_move": "if worse, 0.25 is the sweet spot",
     "replacements": [
       {
-        "old": "SCALAR_LR = 0.35        # learning rate for per-layer scalars (Adam)",
-        "new": "SCALAR_LR = 0.25        # learning rate for per-layer scalars (Adam)"
+        "old": "SCALAR_LR = 0.25        # learning rate for per-layer scalars (Adam)",
+        "new": "SCALAR_LR = 0.20        # learning rate for per-layer scalars (Adam)"
       }
     ]
   },
   {
-    "commit_message": "Lower unembedding LR slightly",
-    "description": "lower UNEMBEDDING_LR from 0.004 to 0.003 on the current best checkpoint",
-    "hypothesis": "the lm_head may converge better with a slightly smaller Adam step",
-    "next_move": "if there is no movement, unembedding LR is probably not the main bottleneck",
-    "replacements": [
-      {
-        "old": "UNEMBEDDING_LR = 0.004  # learning rate for lm_head (Adam)",
-        "new": "UNEMBEDDING_LR = 0.003  # learning rate for lm_head (Adam)"
-      }
-    ]
-  },
-  {
-    "commit_message": "Raise unembedding LR slightly",
-    "description": "raise UNEMBEDDING_LR from 0.004 to 0.005 on the current best checkpoint",
-    "hypothesis": "the lm_head may be under-updating relative to the lower embedding and matrix learning rates",
-    "next_move": "if this hurts, keep the original unembedding LR",
-    "replacements": [
-      {
-        "old": "UNEMBEDDING_LR = 0.004  # learning rate for lm_head (Adam)",
-        "new": "UNEMBEDDING_LR = 0.005  # learning rate for lm_head (Adam)"
-      }
-    ]
-  },
-  {
-    "commit_message": "Lower weight decay modestly",
-    "description": "lower WEIGHT_DECAY from 0.2 to 0.15 on the current best checkpoint",
-    "hypothesis": "0.1 was too weak, but 0.15 may preserve regularization while avoiding under-training",
-    "next_move": "if this is still worse, the original weight decay is likely correct",
-    "replacements": [
-      {
-        "old": "WEIGHT_DECAY = 0.2      # cautious weight decay for Muon",
-        "new": "WEIGHT_DECAY = 0.15     # cautious weight decay for Muon"
-      }
-    ]
-  },
-  {
-    "commit_message": "Shorten warmdown only",
-    "description": "set WARMDOWN_RATIO from 0.5 to 0.4 while keeping no warmup and zero final LR",
-    "hypothesis": "the best checkpoint may benefit from spending less of the fixed budget in cooldown without adding the warmup that hurt before",
-    "next_move": "if this regresses, keep the original schedule shape",
-    "replacements": [
-      {
-        "old": "WARMDOWN_RATIO = 0.5    # fraction of time budget for LR warmdown",
-        "new": "WARMDOWN_RATIO = 0.4    # fraction of time budget for LR warmdown"
-      }
-    ]
-  },
-  {
-    "commit_message": "Lower embedding and scalar LR together",
-    "description": "lower EMBEDDING_LR from 0.45 to 0.42 and SCALAR_LR from 0.35 to 0.30 on the current best checkpoint",
-    "hypothesis": "the best run may still improve with a slightly calmer Adam regime while keeping matrix LR unchanged",
-    "next_move": "if this loses narrowly, keep the original settings and try matrix-only adjustments",
+    "commit_message": "Lower embedding LR to 0.42",
+    "description": "lower EMBEDDING_LR from 0.45 to 0.42",
+    "hypothesis": "like SCALAR_LR, embeddings may converge better with a slightly gentler Adam step",
+    "next_move": "if better, try 0.40; if worse, keep 0.45",
     "replacements": [
       {
         "old": "EMBEDDING_LR = 0.45     # learning rate for token embeddings (Adam)",
         "new": "EMBEDDING_LR = 0.42     # learning rate for token embeddings (Adam)"
-      },
-      {
-        "old": "SCALAR_LR = 0.35        # learning rate for per-layer scalars (Adam)",
-        "new": "SCALAR_LR = 0.30        # learning rate for per-layer scalars (Adam)"
       }
     ]
   },
   {
-    "commit_message": "Lower matrix and unembedding LR together",
-    "description": "lower MATRIX_LR from 0.03 to 0.028 and UNEMBEDDING_LR from 0.004 to 0.0035 on the current best checkpoint",
-    "hypothesis": "the current best may improve with slightly calmer output-side updates across both matrix and lm_head groups",
-    "next_move": "if this regresses clearly, keep the original mixed optimizer balance",
+    "commit_message": "Lower embedding LR to 0.40",
+    "description": "lower EMBEDDING_LR from 0.45 to 0.40",
+    "hypothesis": "a more aggressive embedding LR reduction may help after scalar and warmdown tuning",
+    "next_move": "if worse than 0.42 experiment, use 0.42 as the new floor",
+    "replacements": [
+      {
+        "old": "EMBEDDING_LR = 0.45     # learning rate for token embeddings (Adam)",
+        "new": "EMBEDDING_LR = 0.40     # learning rate for token embeddings (Adam)"
+      }
+    ]
+  },
+  {
+    "commit_message": "Raise unembedding LR to 0.006",
+    "description": "raise UNEMBEDDING_LR from 0.005 to 0.006",
+    "hypothesis": "0.005 helped vs 0.004; lm_head may still benefit from a slightly larger Adam step",
+    "next_move": "if worse, 0.005 is the sweet spot for unembedding",
+    "replacements": [
+      {
+        "old": "UNEMBEDDING_LR = 0.005  # learning rate for lm_head (Adam)",
+        "new": "UNEMBEDDING_LR = 0.006  # learning rate for lm_head (Adam)"
+      }
+    ]
+  },
+  {
+    "commit_message": "Raise matrix LR slightly to 0.032",
+    "description": "raise MATRIX_LR from 0.03 to 0.032",
+    "hypothesis": "with calmer scalar/embedding/warmdown, Muon may benefit from a slightly larger step to match the new regime",
+    "next_move": "if worse, keep 0.03; lowering was clearly bad so up is worth a try",
     "replacements": [
       {
         "old": "MATRIX_LR = 0.03        # learning rate for matrix parameters (Muon)",
-        "new": "MATRIX_LR = 0.028       # learning rate for matrix parameters (Muon)"
-      },
+        "new": "MATRIX_LR = 0.032       # learning rate for matrix parameters (Muon)"
+      }
+    ]
+  },
+  {
+    "commit_message": "Lower weight decay to 0.15 on new best",
+    "description": "lower WEIGHT_DECAY from 0.2 to 0.15 on the updated best checkpoint",
+    "hypothesis": "the previous WD test was discarded, but the new LR/warmdown regime may be more tolerant of lighter regularization",
+    "next_move": "if still worse, keep 0.2",
+    "replacements": [
       {
-        "old": "UNEMBEDDING_LR = 0.004  # learning rate for lm_head (Adam)",
-        "new": "UNEMBEDDING_LR = 0.0035 # learning rate for lm_head (Adam)"
+        "old": "WEIGHT_DECAY = 0.2      # cautious weight decay for Muon",
+        "new": "WEIGHT_DECAY = 0.15     # cautious weight decay for Muon"
       }
     ]
   }
