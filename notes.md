@@ -182,3 +182,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: per-layer scalars may still be moving too aggressively early in the run
 - Next move: if this helps, try a more conservative scalar LR after restoring the best run
+
+## Driver Run: 2026-04-22T01:37:42
+- Commit: `36e1830`
+- Experiment: lower SCALAR_LR from 0.35 to 0.25 on the current best checkpoint
+- Status: keep
+- Log: `003-36e1830.log`
+- val_bpb: `1.637168`
+- training_seconds: `300.2`
+- total_seconds: `568.2`
+- memory_gb: `0.0`
+- Hypothesis: the best run may benefit from much calmer scalar updates under the fixed budget
+- Next move: if this is too slow, keep the original scalar LR
