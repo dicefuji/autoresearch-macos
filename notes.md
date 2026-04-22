@@ -302,3 +302,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: a more aggressive embedding LR reduction may help after scalar and warmdown tuning
 - Next move: if worse than 0.42 experiment, use 0.42 as the new floor
+
+## Driver Run: 2026-04-22T11:04:37
+- Commit: `eb2bbb9`
+- Experiment: raise UNEMBEDDING_LR from 0.005 to 0.006
+- Status: discard
+- Log: `006-eb2bbb9.log`
+- val_bpb: `1.878980`
+- training_seconds: `305.0`
+- total_seconds: `572.6`
+- memory_gb: `0.0`
+- Hypothesis: 0.005 helped vs 0.004; lm_head may still benefit from a slightly larger Adam step
+- Next move: if worse, 0.005 is the sweet spot for unembedding

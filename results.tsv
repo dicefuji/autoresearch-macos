@@ -21,3 +21,4 @@ e696d53	1.621203	0.0	keep	set WARMDOWN_RATIO from 0.4 to 0.30
 21860c4	1.716475	0.0	discard	lower SCALAR_LR from 0.25 to 0.20
 26f6e31	1.675572	0.0	discard	lower EMBEDDING_LR from 0.45 to 0.42
 6f4b9a5	1.651349	0.0	discard	lower EMBEDDING_LR from 0.45 to 0.40
+eb2bbb9	1.878980	0.0	discard	raise UNEMBEDDING_LR from 0.005 to 0.006
