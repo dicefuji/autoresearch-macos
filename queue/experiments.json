@@ -1,17 +1,5 @@
 [
   {
-    "commit_message": "Lower matrix LR slightly",
-    "description": "lower MATRIX_LR from 0.03 to 0.028 on the current best checkpoint",
-    "hypothesis": "a slightly gentler Muon step may improve stability without losing useful progress",
-    "next_move": "if this is close but worse, try a slightly lower scalar LR instead",
-    "replacements": [
-      {
-        "old": "MATRIX_LR = 0.03        # learning rate for matrix parameters (Muon)",
-        "new": "MATRIX_LR = 0.028       # learning rate for matrix parameters (Muon)"
-      }
-    ]
-  },
-  {
     "commit_message": "Lower matrix LR further",
     "description": "lower MATRIX_LR from 0.03 to 0.025 on the current best checkpoint",
     "hypothesis": "the depth-3 model may still be slightly overstepping in the matrix group",
