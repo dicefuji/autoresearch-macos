@@ -470,3 +470,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: fully zeroing the LR at the end of the 5-min budget may cause abrupt loss of progress; ending at 10% may smooth convergence
 - Next move: if better, try 0.05; if worse, 0.0 is correct for this budget
+
+## Driver Run: 2026-04-22T16:29:06
+- Commit: `1b9e0da`
+- Experiment: replace linear cooldown with cooldown**2 for a convex decay curve
+- Status: discard
+- Log: `004-1b9e0da.log`
+- val_bpb: `1.661176`
+- training_seconds: `311.4`
+- total_seconds: `607.8`
+- memory_gb: `0.0`
+- Hypothesis: linear decay may cut LR too fast early in cooldown; a squared schedule keeps more LR budget until near the end
+- Next move: if worse, linear is fine; if better, try cooldown**1.5 for a middle ground
