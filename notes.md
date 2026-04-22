@@ -290,3 +290,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: like SCALAR_LR, embeddings may converge better with a slightly gentler Adam step
 - Next move: if better, try 0.40; if worse, keep 0.45
+
+## Driver Run: 2026-04-22T10:54:57
+- Commit: `6f4b9a5`
+- Experiment: lower EMBEDDING_LR from 0.45 to 0.40
+- Status: discard
+- Log: `005-6f4b9a5.log`
+- val_bpb: `1.651349`
+- training_seconds: `300.6`
+- total_seconds: `597.7`
+- memory_gb: `0.0`
+- Hypothesis: a more aggressive embedding LR reduction may help after scalar and warmdown tuning
+- Next move: if worse than 0.42 experiment, use 0.42 as the new floor
