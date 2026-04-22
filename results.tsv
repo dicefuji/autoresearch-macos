@@ -13,3 +13,4 @@ b4c3428	1.681401	0.0	discard	lower weight decay to 0.1 on best checkpoint; worse
 69a7274	1.641866	0.0	discard	lower SCALAR_LR from 0.35 to 0.30 on the current best checkpoint
 36e1830	1.637168	0.0	keep	lower SCALAR_LR from 0.35 to 0.25 on the current best checkpoint
 cfc7f96	1.639387	0.0	discard	lower UNEMBEDDING_LR from 0.004 to 0.003 on the current best checkpoint
+ee20bf0	1.626630	0.0	keep	raise UNEMBEDDING_LR from 0.004 to 0.005 on the current best checkpoint

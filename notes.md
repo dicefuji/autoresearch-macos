@@ -206,3 +206,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: the lm_head may converge better with a slightly smaller Adam step
 - Next move: if there is no movement, unembedding LR is probably not the main bottleneck
+
+## Driver Run: 2026-04-22T01:56:30
+- Commit: `ee20bf0`
+- Experiment: raise UNEMBEDDING_LR from 0.004 to 0.005 on the current best checkpoint
+- Status: keep
+- Log: `005-ee20bf0.log`
+- val_bpb: `1.626630`
+- training_seconds: `300.3`
+- total_seconds: `556.0`
+- memory_gb: `0.0`
+- Hypothesis: the lm_head may be under-updating relative to the lower embedding and matrix learning rates
+- Next move: if this hurts, keep the original unembedding LR
