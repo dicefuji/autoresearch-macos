@@ -20,12 +20,12 @@ This file is the running journal for the VC-associate autoresearch loop. Update 
 - Open questions: which prompt and training changes most improve memo quality without degrading runtime; which signals are strongest for early founder prediction
 
 ### Latest Experiment
-- Hypothesis: a shallower model could improve experiments per hour without the quality hit from lowering total batch size
-- Change made: reduced `DEPTH` from `4` to `3` while keeping the original total batch size
-- Result: `val_bpb 1.778950`, `training_seconds 338.8`, `total_seconds 665.6`, `num_steps 92`
-- Keep or discard: keep
-- What this taught us about founder prediction: on this M1 Pro setup, architecture simplification can improve both search speed and objective quality; the handoff process should bias toward changes that reduce evaluation/training overhead without shrinking effective batch
-- Next move: continue exploring nearby simpler architectures from this new best checkpoint
+- Hypothesis: letting the depth-3 model use a genuinely smaller width (`HEAD_DIM 64`) might preserve the win while improving efficiency further
+- Change made: reduced `HEAD_DIM` from `128` to `64` at `DEPTH = 3`
+- Result: `val_bpb 2.174275`, `training_seconds 314.7`, `total_seconds 938.7`, `num_steps 21`
+- Keep or discard: discard
+- What this taught us about founder prediction: the depth-3 win did not come from blindly shrinking width; on this setup, the current best seems to rely on the larger rounded-up width even at lower depth
+- Next move: restore the depth-3 best checkpoint and test optimizer schedule tuning instead of additional width shrinkage
 
 ## Driver Run: 2026-04-21T16:17:00
 - Commit: `374a6ec`
@@ -46,6 +46,16 @@ This file is the running journal for the VC-associate autoresearch loop. Update 
 - total_seconds: `665.6`
 - memory_gb: `0.0`
 - Handoff note: clear win on both objective and wall-clock; this is the new branch baseline
+
+## Driver Run: 2026-04-21T16:41:00
+- Commit: `9ff8709`
+- Experiment: reduce head dimension from `128` to `64` at `DEPTH = 3`
+- Status: discard
+- val_bpb: `2.174275`
+- training_seconds: `314.7`
+- total_seconds: `938.7`
+- memory_gb: `0.0`
+- Handoff note: strong regression versus the depth-3 best; restore `HEAD_DIM = 128` before the next run
 
 ## Active Run Template
 

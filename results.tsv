@@ -2,3 +2,4 @@ commit	val_bpb	memory_gb	status	description
 df3e588	2.095573	0.0	keep	baseline on M1 Pro; evaluation dominates wall-clock
 374a6ec	2.152058	0.0	discard	reduce total batch size to 2**15; faster wall-clock but worse val_bpb
 f3d1f58	1.778950	0.0	keep	reduce depth from 4 to 3; much better val_bpb and faster wall-clock
+9ff8709	2.174275	0.0	discard	reduce head dimension to 64 at depth 3; worse val_bpb and slower than depth-3 best
