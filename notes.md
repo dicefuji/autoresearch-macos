@@ -218,3 +218,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: the lm_head may be under-updating relative to the lower embedding and matrix learning rates
 - Next move: if this hurts, keep the original unembedding LR
+
+## Driver Run: 2026-04-22T02:05:55
+- Commit: `0f032e7`
+- Experiment: lower WEIGHT_DECAY from 0.2 to 0.15 on the current best checkpoint
+- Status: discard
+- Log: `006-0f032e7.log`
+- val_bpb: `1.631628`
+- training_seconds: `301.6`
+- total_seconds: `557.4`
+- memory_gb: `0.0`
+- Hypothesis: 0.1 was too weak, but 0.15 may preserve regularization while avoiding under-training
+- Next move: if this is still worse, the original weight decay is likely correct
