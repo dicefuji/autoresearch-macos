@@ -1,97 +1,97 @@
 [
   {
-    "commit_message": "Shorten warmdown further to 0.35",
-    "description": "set WARMDOWN_RATIO from 0.4 to 0.35 — more steps at peak LR",
-    "hypothesis": "0.4 helped; 0.35 gives even more peak-LR time in the 5-min budget",
-    "next_move": "if better, try 0.3; if worse, 0.4 is the sweet spot",
+    "commit_message": "Shorten warmdown to 0.25",
+    "description": "set WARMDOWN_RATIO from 0.30 to 0.25",
+    "hypothesis": "0.5->0.4->0.30 all improved; continuing the trend may still help",
+    "next_move": "if better, try 0.20; if worse, 0.30 is the sweet spot",
     "replacements": [
       {
-        "old": "WARMDOWN_RATIO = 0.4    # fraction of time budget for LR warmdown",
-        "new": "WARMDOWN_RATIO = 0.35   # fraction of time budget for LR warmdown"
+        "old": "WARMDOWN_RATIO = 0.30   # fraction of time budget for LR warmdown",
+        "new": "WARMDOWN_RATIO = 0.25   # fraction of time budget for LR warmdown"
       }
     ]
   },
   {
-    "commit_message": "Shorten warmdown further to 0.3",
-    "description": "set WARMDOWN_RATIO from 0.4 to 0.30",
-    "hypothesis": "model may benefit from spending even less time in cooldown",
-    "next_move": "if worse than 0.35 experiment, stop here",
+    "commit_message": "Shorten warmdown to 0.20",
+    "description": "set WARMDOWN_RATIO from 0.30 to 0.20",
+    "hypothesis": "more time at peak LR may still improve val_bpb if the model is not yet overfitting",
+    "next_move": "if worse than 0.25 but better than 0.30, settle at 0.25",
     "replacements": [
       {
-        "old": "WARMDOWN_RATIO = 0.4    # fraction of time budget for LR warmdown",
-        "new": "WARMDOWN_RATIO = 0.30   # fraction of time budget for LR warmdown"
+        "old": "WARMDOWN_RATIO = 0.30   # fraction of time budget for LR warmdown",
+        "new": "WARMDOWN_RATIO = 0.20   # fraction of time budget for LR warmdown"
       }
     ]
   },
   {
-    "commit_message": "Lower scalar LR to 0.20",
-    "description": "lower SCALAR_LR from 0.25 to 0.20",
-    "hypothesis": "the downward trend in scalar LR may continue to help",
-    "next_move": "if worse, 0.25 is the sweet spot",
+    "commit_message": "Raise Adam beta1 to 0.85",
+    "description": "raise ADAM_BETAS beta1 from 0.8 to 0.85",
+    "hypothesis": "more momentum in Adam may help embedding/unembedding convergence in the fixed budget",
+    "next_move": "if better, try 0.90; if worse, 0.8 is correct",
     "replacements": [
       {
-        "old": "SCALAR_LR = 0.25        # learning rate for per-layer scalars (Adam)",
-        "new": "SCALAR_LR = 0.20        # learning rate for per-layer scalars (Adam)"
+        "old": "ADAM_BETAS = (0.8, 0.95) # Adam beta1, beta2",
+        "new": "ADAM_BETAS = (0.85, 0.95) # Adam beta1, beta2"
       }
     ]
   },
   {
-    "commit_message": "Lower embedding LR to 0.42",
-    "description": "lower EMBEDDING_LR from 0.45 to 0.42",
-    "hypothesis": "like SCALAR_LR, embeddings may converge better with a slightly gentler Adam step",
-    "next_move": "if better, try 0.40; if worse, keep 0.45",
+    "commit_message": "Raise Adam beta1 to 0.90",
+    "description": "raise ADAM_BETAS beta1 from 0.8 to 0.90",
+    "hypothesis": "standard Adam beta1=0.9 may outperform the non-standard 0.8",
+    "next_move": "if worse, the low beta1 is intentional for the fixed short budget",
     "replacements": [
       {
-        "old": "EMBEDDING_LR = 0.45     # learning rate for token embeddings (Adam)",
-        "new": "EMBEDDING_LR = 0.42     # learning rate for token embeddings (Adam)"
+        "old": "ADAM_BETAS = (0.8, 0.95) # Adam beta1, beta2",
+        "new": "ADAM_BETAS = (0.90, 0.95) # Adam beta1, beta2"
       }
     ]
   },
   {
-    "commit_message": "Lower embedding LR to 0.40",
-    "description": "lower EMBEDDING_LR from 0.45 to 0.40",
-    "hypothesis": "a more aggressive embedding LR reduction may help after scalar and warmdown tuning",
-    "next_move": "if worse than 0.42 experiment, use 0.42 as the new floor",
+    "commit_message": "Double total batch size to 2^17",
+    "description": "raise TOTAL_BATCH_SIZE from 2**16 to 2**17",
+    "hypothesis": "larger effective batch may give more stable gradient estimates and better val_bpb per optimizer step",
+    "next_move": "if worse, the current batch size is well-tuned; if better, consider 2^18",
     "replacements": [
       {
-        "old": "EMBEDDING_LR = 0.45     # learning rate for token embeddings (Adam)",
-        "new": "EMBEDDING_LR = 0.40     # learning rate for token embeddings (Adam)"
+        "old": "TOTAL_BATCH_SIZE = 2**16 # ~65K tokens per optimizer step",
+        "new": "TOTAL_BATCH_SIZE = 2**17 # ~131K tokens per optimizer step"
       }
     ]
   },
   {
-    "commit_message": "Raise unembedding LR to 0.006",
-    "description": "raise UNEMBEDDING_LR from 0.005 to 0.006",
-    "hypothesis": "0.005 helped vs 0.004; lm_head may still benefit from a slightly larger Adam step",
-    "next_move": "if worse, 0.005 is the sweet spot for unembedding",
+    "commit_message": "Try sliding window in layer 1 only (LS pattern)",
+    "description": "set WINDOW_PATTERN from 'L' to 'LS' — full attention in layer 0, half-context in layer 1, full in layer 2",
+    "hypothesis": "pure-L gave worse results before, but with the current better-tuned schedule the small efficiency gain may make up the difference",
+    "next_move": "if worse, keep all-L; the previous experiment showed this costs ~0.005 val_bpb",
     "replacements": [
       {
-        "old": "UNEMBEDDING_LR = 0.005  # learning rate for lm_head (Adam)",
-        "new": "UNEMBEDDING_LR = 0.006  # learning rate for lm_head (Adam)"
+        "old": "WINDOW_PATTERN = \"L\"    # sliding window pattern: L=full, S=half context",
+        "new": "WINDOW_PATTERN = \"LS\"   # sliding window pattern: L=full, S=half context"
       }
     ]
   },
   {
-    "commit_message": "Raise matrix LR slightly to 0.032",
-    "description": "raise MATRIX_LR from 0.03 to 0.032",
-    "hypothesis": "with calmer scalar/embedding/warmdown, Muon may benefit from a slightly larger step to match the new regime",
-    "next_move": "if worse, keep 0.03; lowering was clearly bad so up is worth a try",
+    "commit_message": "Try ASPECT_RATIO 80 (wider model at depth 3)",
+    "description": "raise ASPECT_RATIO from 64 to 80; model_dim goes from 256 to 384",
+    "hypothesis": "a slightly wider model under the 5-min budget may have more capacity and better val_bpb",
+    "next_move": "if slower and worse, the current size is right; if better but slower the capacity gain is worth it",
     "replacements": [
       {
-        "old": "MATRIX_LR = 0.03        # learning rate for matrix parameters (Muon)",
-        "new": "MATRIX_LR = 0.032       # learning rate for matrix parameters (Muon)"
+        "old": "ASPECT_RATIO = 64       # model_dim = depth * ASPECT_RATIO",
+        "new": "ASPECT_RATIO = 80       # model_dim = depth * ASPECT_RATIO"
       }
     ]
   },
   {
-    "commit_message": "Lower weight decay to 0.15 on new best",
-    "description": "lower WEIGHT_DECAY from 0.2 to 0.15 on the updated best checkpoint",
-    "hypothesis": "the previous WD test was discarded, but the new LR/warmdown regime may be more tolerant of lighter regularization",
-    "next_move": "if still worse, keep 0.2",
+    "commit_message": "Try ns_steps=6 for Muon orthogonalization",
+    "description": "increase ns_steps from 5 to 6 in the MuonAdamW optimizer call",
+    "hypothesis": "one more Newton-Schulz step gives a more accurate polar factor; marginal cost on MPS",
+    "next_move": "if no improvement, ns_steps=5 is sufficient",
     "replacements": [
       {
-        "old": "WEIGHT_DECAY = 0.2      # cautious weight decay for Muon",
-        "new": "WEIGHT_DECAY = 0.15     # cautious weight decay for Muon"
+        "old": "                momentum=0.95, ns_steps=5, beta2=0.95, weight_decay=weight_decay,",
+        "new": "                momentum=0.95, ns_steps=6, beta2=0.95, weight_decay=weight_decay,"
       }
     ]
   }
