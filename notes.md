@@ -158,3 +158,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: a slightly gentler Muon step may improve stability without losing useful progress
 - Next move: if this is close but worse, try a slightly lower scalar LR instead
+
+## Driver Run: 2026-04-22T01:18:37
+- Commit: `51a945d`
+- Experiment: lower MATRIX_LR from 0.03 to 0.025 on the current best checkpoint
+- Status: discard
+- Log: `001-51a945d.log`
+- val_bpb: `1.650867`
+- training_seconds: `301.5`
+- total_seconds: `572.0`
+- memory_gb: `0.0`
+- Hypothesis: the depth-3 model may still be slightly overstepping in the matrix group
+- Next move: if this degrades sharply, matrix LR is probably already near the sweet spot
