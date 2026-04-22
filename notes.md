@@ -92,6 +92,16 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Handoff note: lower regularization hurt quality and reduced useful steps (`116` vs `147` on the best run); keep the original `WEIGHT_DECAY = 0.2`
 
+## Driver Run: 2026-04-22T00:27:00
+- Commit: `2d5d6f6`
+- Experiment: lower `EMBEDDING_LR` from `0.45` to `0.40` on the best checkpoint
+- Status: discard
+- val_bpb: `1.641244`
+- training_seconds: `300.0`
+- total_seconds: `562.7`
+- memory_gb: `0.0`
+- Handoff note: very close to the current best but still worse by `0.002062`; restore `EMBEDDING_LR = 0.45` before overnight search
+
 ## Active Run Template
 
 ### Run
