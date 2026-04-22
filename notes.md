@@ -146,3 +146,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - What kinds of contrarian thinking appeared repeatedly among strong candidates?
 - What changes to prompts or training produced the biggest jump in memo quality?
 - What should the next run test?
+
+## Driver Run: 2026-04-22T01:06:06
+- Commit: `57dccfc`
+- Experiment: lower MATRIX_LR from 0.03 to 0.028 on the current best checkpoint
+- Status: discard
+- Log: `001-57dccfc.log`
+- val_bpb: `1.867773`
+- training_seconds: `325.9`
+- total_seconds: `621.9`
+- memory_gb: `0.0`
+- Hypothesis: a slightly gentler Muon step may improve stability without losing useful progress
+- Next move: if this is close but worse, try a slightly lower scalar LR instead

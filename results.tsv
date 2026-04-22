@@ -8,3 +8,4 @@ f3d1f58	1.778950	0.0	keep	reduce depth from 4 to 3; much better val_bpb and fast
 564dc82	1.647455	0.0	discard	use short window in first layer; near-best speed but slightly worse val_bpb
 b4c3428	1.681401	0.0	discard	lower weight decay to 0.1 on best checkpoint; worse val_bpb with fewer steps
 2d5d6f6	1.641244	0.0	discard	lower embedding LR to 0.40 on best checkpoint; nearly tied best but still worse
+57dccfc	1.867773	0.0	discard	lower MATRIX_LR from 0.03 to 0.028 on the current best checkpoint
