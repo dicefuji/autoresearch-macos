@@ -4,3 +4,4 @@ df3e588	2.095573	0.0	keep	baseline on M1 Pro; evaluation dominates wall-clock
 f3d1f58	1.778950	0.0	keep	reduce depth from 4 to 3; much better val_bpb and faster wall-clock
 9ff8709	2.174275	0.0	discard	reduce head dimension to 64 at depth 3; worse val_bpb and slower than depth-3 best
 1ace239	1.639182	0.0	keep	lower embedding, matrix, and scalar learning rates on depth-3 checkpoint
+01726fa	1.696098	0.0	discard	add warmup and less aggressive cooldown on lower-LR checkpoint

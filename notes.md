@@ -20,12 +20,12 @@ This file is the running journal for the VC-associate autoresearch loop. Update 
 - Open questions: which prompt and training changes most improve memo quality without degrading runtime; which signals are strongest for early founder prediction
 
 ### Latest Experiment
-- Hypothesis: the depth-3 checkpoint is overdriving the hottest optimizer knobs, and a conservative LR pass can improve both stability and final quality
-- Change made: lowered `EMBEDDING_LR` from `0.6` to `0.45`, `MATRIX_LR` from `0.04` to `0.03`, and `SCALAR_LR` from `0.5` to `0.35`
-- Result: `val_bpb 1.639182`, `training_seconds 301.0`, `total_seconds 574.9`, `num_steps 147`
-- Keep or discard: keep
-- What this taught us about founder prediction: the current best regime is not just a smaller architecture; it also benefits from gentler optimizer settings that let the short time-budget run accumulate far more useful steps
-- Next move: keep this checkpoint and test schedule tuning next, especially adding a small warmup and avoiding decay all the way to zero
+- Hypothesis: adding a small warmup and stopping the cooldown above zero would preserve the lower-LR win while improving optimization efficiency
+- Change made: set `WARMUP_RATIO = 0.03`, `WARMDOWN_RATIO = 0.3`, and `FINAL_LR_FRAC = 0.15` on the lower-LR depth-3 checkpoint
+- Result: `val_bpb 1.696098`, `training_seconds 301.0`, `total_seconds 595.5`, `num_steps 123`
+- Keep or discard: discard
+- What this taught us about founder prediction: the lower-LR depth-3 checkpoint wants a sharper schedule; the added warmup and nonzero tail smoothed the run but lost quality relative to the current best
+- Next move: restore the lower-LR best checkpoint and try a more localized architectural throughput tweak instead of softer schedule changes
 
 ## Driver Run: 2026-04-21T16:17:00
 - Commit: `374a6ec`
@@ -66,6 +66,16 @@ This file is the running journal for the VC-associate autoresearch loop. Update 
 - total_seconds: `574.9`
 - memory_gb: `0.0`
 - Handoff note: clear win on both objective and total wall-clock; this is the new branch baseline
+
+## Driver Run: 2026-04-21T17:11:00
+- Commit: `01726fa`
+- Experiment: add a small warmup and a less aggressive cooldown on the lower-LR checkpoint
+- Status: discard
+- val_bpb: `1.696098`
+- training_seconds: `301.0`
+- total_seconds: `595.5`
+- memory_gb: `0.0`
+- Handoff note: final metrics did flush after an initial watcher miss; result is worse than the current best `1.639182`, so keep the lower-LR baseline
 
 ## Active Run Template
 
