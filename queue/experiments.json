@@ -1,77 +1,77 @@
 [
   {
-    "commit_message": "Speed up Muon momentum warmup to 80 steps",
-    "description": "change get_muon_momentum warmup from 300 steps to 80 steps so momentum reaches 0.95 before cooldown",
-    "hypothesis": "we do ~110 steps per run; the 300-step warmup means momentum never exceeds ~0.89, effectively training with sub-optimal Muon momentum the whole time",
-    "next_move": "if better, also try starting momentum at 0.90 instead of 0.85",
+    "commit_message": "WARMDOWN_RATIO=0.25 on depth-2 model",
+    "description": "retry WARMDOWN_RATIO=0.25 on the depth-2 checkpoint (was catastrophic for depth-3 but depth-2 has ~50% more steps)",
+    "hypothesis": "depth-2 gets ~170 steps; 0.25 warmdown means ~43 steps of cooldown which may be adequate unlike for depth-3",
+    "next_move": "if still terrible, 0.30 is the floor regardless of depth; if better, try 0.20",
     "replacements": [
       {
-        "old": "    frac = min(step / 300, 1)\n    return (1 - frac) * 0.85 + frac * 0.95",
-        "new": "    frac = min(step / 80, 1)\n    return (1 - frac) * 0.85 + frac * 0.95"
+        "old": "WARMDOWN_RATIO = 0.30   # fraction of time budget for LR warmdown",
+        "new": "WARMDOWN_RATIO = 0.25   # fraction of time budget for LR warmdown"
       }
     ]
   },
   {
-    "commit_message": "Start Muon momentum at 0.90 with 80-step warmup",
-    "description": "change get_muon_momentum to warm from 0.90 to 0.95 over 80 steps instead of 0.85 to 0.95 over 300",
-    "hypothesis": "higher starting momentum may help even in early steps; combined with faster warmup",
-    "next_move": "if worse than the 80-step warmup alone, the 0.85 start is intentional",
+    "commit_message": "WARMDOWN_RATIO=0.35 on depth-2 model",
+    "description": "try WARMDOWN_RATIO=0.35 on depth-2 — slightly more cooldown",
+    "hypothesis": "depth-2 with more steps may benefit from a slightly longer cooldown that gives smoother final convergence",
+    "next_move": "if worse, 0.30 is optimal; if better, try 0.40",
     "replacements": [
       {
-        "old": "    frac = min(step / 300, 1)\n    return (1 - frac) * 0.85 + frac * 0.95",
-        "new": "    frac = min(step / 80, 1)\n    return (1 - frac) * 0.90 + frac * 0.95"
+        "old": "WARMDOWN_RATIO = 0.30   # fraction of time budget for LR warmdown",
+        "new": "WARMDOWN_RATIO = 0.35   # fraction of time budget for LR warmdown"
       }
     ]
   },
   {
-    "commit_message": "Try FINAL_LR_FRAC=0.1 — don't fully cool to zero",
-    "description": "raise FINAL_LR_FRAC from 0.0 to 0.1 so LR decays to 10% of peak rather than 0",
-    "hypothesis": "fully zeroing the LR at the end of the 5-min budget may cause abrupt loss of progress; ending at 10% may smooth convergence",
-    "next_move": "if better, try 0.05; if worse, 0.0 is correct for this budget",
+    "commit_message": "Lower MATRIX_LR to 0.025 on depth-2",
+    "description": "retry MATRIX_LR=0.025 on depth-2 (was worse for depth-3 but depth-2 has different gradient dynamics)",
+    "hypothesis": "with 2 layers the Muon updates are applied more frequently per token; a gentler step may work better",
+    "next_move": "if worse, 0.03 is correct for depth-2 as well",
     "replacements": [
       {
-        "old": "FINAL_LR_FRAC = 0.0     # final LR as fraction of initial",
-        "new": "FINAL_LR_FRAC = 0.1     # final LR as fraction of initial"
+        "old": "MATRIX_LR = 0.03        # learning rate for matrix parameters (Muon)",
+        "new": "MATRIX_LR = 0.025       # learning rate for matrix parameters (Muon)"
       }
     ]
   },
   {
-    "commit_message": "Squared cosine-like LR cooldown",
-    "description": "replace linear cooldown with cooldown**2 for a convex decay curve",
-    "hypothesis": "linear decay may cut LR too fast early in cooldown; a squared schedule keeps more LR budget until near the end",
-    "next_move": "if worse, linear is fine; if better, try cooldown**1.5 for a middle ground",
+    "commit_message": "Raise MATRIX_LR to 0.035 on depth-2",
+    "description": "try MATRIX_LR=0.035 on depth-2 — slightly more aggressive Muon",
+    "hypothesis": "depth-2 with more gradient steps may tolerate a slightly higher Muon LR; we only tried 0.03 and 0.032 before on depth-3",
+    "next_move": "if better, try 0.04; if worse, 0.03 is correct",
     "replacements": [
       {
-        "old": "        cooldown = (1.0 - progress) / WARMDOWN_RATIO\n        return cooldown * 1.0 + (1 - cooldown) * FINAL_LR_FRAC",
-        "new": "        cooldown = (1.0 - progress) / WARMDOWN_RATIO\n        return cooldown ** 2 * 1.0 + (1 - cooldown ** 2) * FINAL_LR_FRAC"
+        "old": "MATRIX_LR = 0.03        # learning rate for matrix parameters (Muon)",
+        "new": "MATRIX_LR = 0.035       # learning rate for matrix parameters (Muon)"
       }
     ]
   },
   {
-    "commit_message": "Muon beta2 0.95 -> 0.98",
-    "description": "raise Muon beta2 from 0.95 to 0.98 for slower variance adaptation",
-    "hypothesis": "0.95 adapts step sizes very quickly; 0.98 gives a more stable estimate over the ~110 training steps",
-    "next_move": "if worse, fast variance adaptation is beneficial for this short budget",
+    "commit_message": "Lower SCALAR_LR to 0.20 on depth-2",
+    "description": "retry SCALAR_LR=0.20 on depth-2 (was much worse for depth-3 but depth-2 has different convergence speed)",
+    "hypothesis": "with ~170 steps, per-layer scalars may converge fine with a gentler 0.20 update rate",
+    "next_move": "if worse, 0.25 is correct; if better, try 0.15",
     "replacements": [
       {
-        "old": "                momentum=0.95, ns_steps=5, beta2=0.95, weight_decay=weight_decay,",
-        "new": "                momentum=0.95, ns_steps=5, beta2=0.98, weight_decay=weight_decay,"
+        "old": "SCALAR_LR = 0.25        # learning rate for per-layer scalars (Adam)",
+        "new": "SCALAR_LR = 0.20        # learning rate for per-layer scalars (Adam)"
       }
     ]
   },
   {
-    "commit_message": "DEPTH=2 ASPECT_RATIO=96 — shallower model more steps",
-    "description": "set DEPTH=2 and ASPECT_RATIO=96 (model_dim stays 256, 2 layers instead of 3, ~50% more optimizer steps)",
-    "hypothesis": "depth=3 beat depth=4 largely due to more steps in the fixed budget; depth=2 gets even more steps — capacity vs. iteration count tradeoff",
-    "next_move": "if clearly worse, depth=3 has the right capacity; if competitive, try depth=2 with tuned LRs",
+    "commit_message": "DEPTH=1 ASPECT_RATIO=192 — single layer maximum steps",
+    "description": "set DEPTH=1 and ASPECT_RATIO=192 (model_dim=256, 1 layer, potentially 3x more steps than depth-3)",
+    "hypothesis": "if the depth-3→depth-2 improvement comes purely from more gradient steps, depth-1 should win; tests the capacity floor",
+    "next_move": "if competitive, tune LRs for depth-1; if badly worse, depth-2 is the sweet spot for capacity vs. steps",
     "replacements": [
       {
-        "old": "DEPTH = 3               # number of transformer layers",
-        "new": "DEPTH = 2               # number of transformer layers"
+        "old": "DEPTH = 2               # number of transformer layers",
+        "new": "DEPTH = 1               # number of transformer layers"
       },
       {
-        "old": "ASPECT_RATIO = 64       # model_dim = depth * ASPECT_RATIO",
-        "new": "ASPECT_RATIO = 96       # model_dim = depth * ASPECT_RATIO"
+        "old": "ASPECT_RATIO = 96       # model_dim = depth * ASPECT_RATIO",
+        "new": "ASPECT_RATIO = 192      # model_dim = depth * ASPECT_RATIO"
       }
     ]
   }
