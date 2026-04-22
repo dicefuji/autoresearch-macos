@@ -338,3 +338,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: the previous WD test was discarded, but the new LR/warmdown regime may be more tolerant of lighter regularization
 - Next move: if still worse, keep 0.2
+
+## Driver Run: 2026-04-22T14:19:52
+- Commit: `c8cca1b`
+- Experiment: set WARMDOWN_RATIO from 0.30 to 0.25
+- Status: discard
+- Log: `001-c8cca1b.log`
+- val_bpb: `2.062247`
+- training_seconds: `335.1`
+- total_seconds: `1011.7`
+- memory_gb: `0.0`
+- Hypothesis: 0.5->0.4->0.30 all improved; continuing the trend may still help
+- Next move: if better, try 0.20; if worse, 0.30 is the sweet spot
