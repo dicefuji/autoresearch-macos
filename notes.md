@@ -326,3 +326,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: with calmer scalar/embedding/warmdown, Muon may benefit from a slightly larger step to match the new regime
 - Next move: if worse, keep 0.03; lowering was clearly bad so up is worth a try
+
+## Driver Run: 2026-04-22T11:23:42
+- Commit: `7f4c7f4`
+- Experiment: lower WEIGHT_DECAY from 0.2 to 0.15 on the updated best checkpoint
+- Status: discard
+- Log: `008-7f4c7f4.log`
+- val_bpb: `1.677571`
+- training_seconds: `301.3`
+- total_seconds: `564.6`
+- memory_gb: `0.0`
+- Hypothesis: the previous WD test was discarded, but the new LR/warmdown regime may be more tolerant of lighter regularization
+- Next move: if still worse, keep 0.2
