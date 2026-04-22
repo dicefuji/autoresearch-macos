@@ -410,3 +410,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: pure-L gave worse results before, but with the current better-tuned schedule the small efficiency gain may make up the difference
 - Next move: if worse, keep all-L; the previous experiment showed this costs ~0.005 val_bpb
+
+## Driver Run: 2026-04-22T15:32:23
+- Commit: `68833d1`
+- Experiment: raise ASPECT_RATIO from 64 to 80; model_dim goes from 256 to 384
+- Status: discard
+- Log: `007-68833d1.log`
+- val_bpb: `1.940620`
+- training_seconds: `305.2`
+- total_seconds: `585.3`
+- memory_gb: `0.0`
+- Hypothesis: a slightly wider model under the 5-min budget may have more capacity and better val_bpb
+- Next move: if slower and worse, the current size is right; if better but slower the capacity gain is worth it

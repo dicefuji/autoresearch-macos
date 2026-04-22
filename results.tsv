@@ -30,3 +30,4 @@ b29ad6b	1.647907	0.0	discard	raise ADAM_BETAS beta1 from 0.8 to 0.85
 2d84116	1.650593	0.0	discard	raise ADAM_BETAS beta1 from 0.8 to 0.90
 250cc30	1.972390	0.0	discard	raise TOTAL_BATCH_SIZE from 2**16 to 2**17
 832c907	1.871419	0.0	discard	set WINDOW_PATTERN from 'L' to 'LS' — full attention in layer 0, half-context in layer 1, full in layer 2
+68833d1	1.940620	0.0	discard	raise ASPECT_RATIO from 64 to 80; model_dim goes from 256 to 384
