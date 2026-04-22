@@ -446,3 +446,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: we do ~110 steps per run; the 300-step warmup means momentum never exceeds ~0.89, effectively training with sub-optimal Muon momentum the whole time
 - Next move: if better, also try starting momentum at 0.90 instead of 0.85
+
+## Driver Run: 2026-04-22T16:09:06
+- Commit: `d54a1d8`
+- Experiment: change get_muon_momentum to warm from 0.90 to 0.95 over 80 steps instead of 0.85 to 0.95 over 300
+- Status: discard
+- Log: `002-d54a1d8.log`
+- val_bpb: `1.684748`
+- training_seconds: `300.6`
+- total_seconds: `582.3`
+- memory_gb: `0.0`
+- Hypothesis: higher starting momentum may help even in early steps; combined with faster warmup
+- Next move: if worse than the 80-step warmup alone, the 0.85 start is intentional
