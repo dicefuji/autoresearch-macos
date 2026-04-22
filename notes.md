@@ -374,3 +374,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: more momentum in Adam may help embedding/unembedding convergence in the fixed budget
 - Next move: if better, try 0.90; if worse, 0.8 is correct
+
+## Driver Run: 2026-04-22T14:59:14
+- Commit: `2d84116`
+- Experiment: raise ADAM_BETAS beta1 from 0.8 to 0.90
+- Status: discard
+- Log: `004-2d84116.log`
+- val_bpb: `1.650593`
+- training_seconds: `300.6`
+- total_seconds: `561.9`
+- memory_gb: `0.0`
+- Hypothesis: standard Adam beta1=0.9 may outperform the non-standard 0.8
+- Next move: if worse, the low beta1 is intentional for the fixed short budget
