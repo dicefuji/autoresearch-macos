@@ -494,3 +494,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 0.95 adapts step sizes very quickly; 0.98 gives a more stable estimate over the ~110 training steps
 - Next move: if worse, fast variance adaptation is beneficial for this short budget
+
+## Driver Run: 2026-04-22T16:47:58
+- Commit: `14e3392`
+- Experiment: set DEPTH=2 and ASPECT_RATIO=96 (model_dim stays 256, 2 layers instead of 3, ~50% more optimizer steps)
+- Status: keep
+- Log: `006-14e3392.log`
+- val_bpb: `1.582612`
+- training_seconds: `300.3`
+- total_seconds: `512.3`
+- memory_gb: `0.0`
+- Hypothesis: depth=3 beat depth=4 largely due to more steps in the fixed budget; depth=2 gets even more steps — capacity vs. iteration count tradeoff
+- Next move: if clearly worse, depth=3 has the right capacity; if competitive, try depth=2 with tuned LRs
