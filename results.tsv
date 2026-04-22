@@ -6,3 +6,4 @@ f3d1f58	1.778950	0.0	keep	reduce depth from 4 to 3; much better val_bpb and fast
 1ace239	1.639182	0.0	keep	lower embedding, matrix, and scalar learning rates on depth-3 checkpoint
 01726fa	1.696098	0.0	discard	add warmup and less aggressive cooldown on lower-LR checkpoint
 564dc82	1.647455	0.0	discard	use short window in first layer; near-best speed but slightly worse val_bpb
+b4c3428	1.681401	0.0	discard	lower weight decay to 0.1 on best checkpoint; worse val_bpb with fewer steps

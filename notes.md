@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This file is the running journal for the VC-associate autoresearch loop. Update it after baseline setup and after each meaningful experiment so the final retrospective can be written from this file alone.
+This file is the running journal for the VC-associate autoresearch loop. It is append-only from this point forward: do not rewrite prior run entries. Add a new dated block for every completed experiment so another agent can reconstruct what worked, what failed, and what the current best checkpoint is.
 
 ## Active Run
 
@@ -20,12 +20,7 @@ This file is the running journal for the VC-associate autoresearch loop. Update 
 - Open questions: which prompt and training changes most improve memo quality without degrading runtime; which signals are strongest for early founder prediction
 
 ### Latest Experiment
-- Hypothesis: making only the first layer cheaper with a short attention window could keep most of the lower-LR depth-3 quality while improving throughput
-- Change made: changed `WINDOW_PATTERN` from `"L"` to `"SLL"` on the lower-LR depth-3 checkpoint
-- Result: `val_bpb 1.647455`, `training_seconds 300.4`, `total_seconds 572.9`, `num_steps 140`
-- Keep or discard: discard
-- What this taught us about founder prediction: partial windowing is close to viable on this setup, but it still loses to the full-context lower-LR baseline; the current best seems to prefer full attention even when the speed tradeoff is attractive
-- Next move: restore the lower-LR best checkpoint and continue with nearby optimizer or regularization tuning instead of sliding-window simplifications
+- Status: historical section retained for compatibility; use appended `## Driver Run:` entries below as the source of truth.
 
 ## Driver Run: 2026-04-21T16:17:00
 - Commit: `374a6ec`
@@ -86,6 +81,16 @@ This file is the running journal for the VC-associate autoresearch loop. Update 
 - total_seconds: `572.9`
 - memory_gb: `0.0`
 - Handoff note: close to the current best but still worse; restore full-context attention before the next run
+
+## Driver Run: 2026-04-22T00:16:00
+- Commit: `b4c3428`
+- Experiment: lower `WEIGHT_DECAY` from `0.2` to `0.1` on the lower-LR depth-3 checkpoint
+- Status: discard
+- val_bpb: `1.681401`
+- training_seconds: `300.3`
+- total_seconds: `588.2`
+- memory_gb: `0.0`
+- Handoff note: lower regularization hurt quality and reduced useful steps (`116` vs `147` on the best run); keep the original `WEIGHT_DECAY = 0.2`
 
 ## Active Run Template
 
