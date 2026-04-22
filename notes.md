@@ -422,3 +422,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: a slightly wider model under the 5-min budget may have more capacity and better val_bpb
 - Next move: if slower and worse, the current size is right; if better but slower the capacity gain is worth it
+
+## Driver Run: 2026-04-22T15:42:03
+- Commit: `9c2c026`
+- Experiment: increase ns_steps from 5 to 6 in the MuonAdamW optimizer call
+- Status: discard
+- Log: `008-9c2c026.log`
+- val_bpb: `1.684874`
+- training_seconds: `302.5`
+- total_seconds: `572.7`
+- memory_gb: `0.0`
+- Hypothesis: one more Newton-Schulz step gives a more accurate polar factor; marginal cost on MPS
+- Next move: if no improvement, ns_steps=5 is sufficient
