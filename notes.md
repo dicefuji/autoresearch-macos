@@ -386,3 +386,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: standard Adam beta1=0.9 may outperform the non-standard 0.8
 - Next move: if worse, the low beta1 is intentional for the fixed short budget
+
+## Driver Run: 2026-04-22T15:12:27
+- Commit: `250cc30`
+- Experiment: raise TOTAL_BATCH_SIZE from 2**16 to 2**17
+- Status: discard
+- Log: `005-250cc30.log`
+- val_bpb: `1.972390`
+- training_seconds: `315.2`
+- total_seconds: `786.0`
+- memory_gb: `0.0`
+- Hypothesis: larger effective batch may give more stable gradient estimates and better val_bpb per optimizer step
+- Next move: if worse, the current batch size is well-tuned; if better, consider 2^18

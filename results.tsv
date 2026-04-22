@@ -28,3 +28,4 @@ c8cca1b	2.062247	0.0	discard	set WARMDOWN_RATIO from 0.30 to 0.25
 6a5edd3	1.809597	0.0	discard	set WARMDOWN_RATIO from 0.30 to 0.20
 b29ad6b	1.647907	0.0	discard	raise ADAM_BETAS beta1 from 0.8 to 0.85
 2d84116	1.650593	0.0	discard	raise ADAM_BETAS beta1 from 0.8 to 0.90
+250cc30	1.972390	0.0	discard	raise TOTAL_BATCH_SIZE from 2**16 to 2**17
