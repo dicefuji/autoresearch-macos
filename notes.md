@@ -254,3 +254,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 0.4 helped; 0.35 gives even more peak-LR time in the 5-min budget
 - Next move: if better, try 0.3; if worse, 0.4 is the sweet spot
+
+## Driver Run: 2026-04-22T10:25:03
+- Commit: `e696d53`
+- Experiment: set WARMDOWN_RATIO from 0.4 to 0.30
+- Status: keep
+- Log: `002-e696d53.log`
+- val_bpb: `1.621203`
+- training_seconds: `300.4`
+- total_seconds: `555.6`
+- memory_gb: `0.0`
+- Hypothesis: model may benefit from spending even less time in cooldown
+- Next move: if worse than 0.35 experiment, stop here

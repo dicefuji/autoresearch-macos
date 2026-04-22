@@ -17,3 +17,4 @@ ee20bf0	1.626630	0.0	keep	raise UNEMBEDDING_LR from 0.004 to 0.005 on the curren
 0f032e7	1.631628	0.0	discard	lower WEIGHT_DECAY from 0.2 to 0.15 on the current best checkpoint
 824597a	1.621708	0.0	keep	set WARMDOWN_RATIO from 0.5 to 0.4 while keeping no warmup and zero final LR
 cce4abe	1.623379	0.0	discard	set WARMDOWN_RATIO from 0.4 to 0.35 — more steps at peak LR
+e696d53	1.621203	0.0	keep	set WARMDOWN_RATIO from 0.4 to 0.30
