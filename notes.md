@@ -20,12 +20,12 @@ This file is the running journal for the VC-associate autoresearch loop. Update 
 - Open questions: which prompt and training changes most improve memo quality without degrading runtime; which signals are strongest for early founder prediction
 
 ### Latest Experiment
-- Hypothesis: adding a small warmup and stopping the cooldown above zero would preserve the lower-LR win while improving optimization efficiency
-- Change made: set `WARMUP_RATIO = 0.03`, `WARMDOWN_RATIO = 0.3`, and `FINAL_LR_FRAC = 0.15` on the lower-LR depth-3 checkpoint
-- Result: `val_bpb 1.696098`, `training_seconds 301.0`, `total_seconds 595.5`, `num_steps 123`
+- Hypothesis: making only the first layer cheaper with a short attention window could keep most of the lower-LR depth-3 quality while improving throughput
+- Change made: changed `WINDOW_PATTERN` from `"L"` to `"SLL"` on the lower-LR depth-3 checkpoint
+- Result: `val_bpb 1.647455`, `training_seconds 300.4`, `total_seconds 572.9`, `num_steps 140`
 - Keep or discard: discard
-- What this taught us about founder prediction: the lower-LR depth-3 checkpoint wants a sharper schedule; the added warmup and nonzero tail smoothed the run but lost quality relative to the current best
-- Next move: restore the lower-LR best checkpoint and try a more localized architectural throughput tweak instead of softer schedule changes
+- What this taught us about founder prediction: partial windowing is close to viable on this setup, but it still loses to the full-context lower-LR baseline; the current best seems to prefer full attention even when the speed tradeoff is attractive
+- Next move: restore the lower-LR best checkpoint and continue with nearby optimizer or regularization tuning instead of sliding-window simplifications
 
 ## Driver Run: 2026-04-21T16:17:00
 - Commit: `374a6ec`
@@ -76,6 +76,16 @@ This file is the running journal for the VC-associate autoresearch loop. Update 
 - total_seconds: `595.5`
 - memory_gb: `0.0`
 - Handoff note: final metrics did flush after an initial watcher miss; result is worse than the current best `1.639182`, so keep the lower-LR baseline
+
+## Driver Run: 2026-04-22T00:02:00
+- Commit: `564dc82`
+- Experiment: use `WINDOW_PATTERN = "SLL"` on the lower-LR depth-3 checkpoint
+- Status: discard
+- val_bpb: `1.647455`
+- training_seconds: `300.4`
+- total_seconds: `572.9`
+- memory_gb: `0.0`
+- Handoff note: close to the current best but still worse; restore full-context attention before the next run
 
 ## Active Run Template
 
