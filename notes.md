@@ -20,12 +20,22 @@ This file is the running journal for the VC-associate autoresearch loop. Update 
 - Open questions: which prompt and training changes most improve memo quality without degrading runtime; which signals are strongest for early founder prediction
 
 ### Latest Experiment
-- Hypothesis: the baseline run will establish the runtime and starting quality envelope for later prompt and model iterations
-- Change made: initialized `autoresearch/apr21-vc`, ran the untouched baseline on M1 Pro / MPS
-- Result: `val_bpb 2.095573`, `training_seconds 316.7`, `total_seconds 1233.9`, `num_steps 17`
-- Keep or discard: keep
-- What this taught us about founder prediction: before chasing rubric quality, this setup needs much better experiments-per-hour; evaluation overhead currently dominates the overnight loop
-- Next move: test a lower total batch size to reduce accumulation and improve iteration speed without changing the evaluation harness
+- Hypothesis: removing one accumulation step would improve experiments per hour enough to justify the change
+- Change made: reduced `TOTAL_BATCH_SIZE` from `2**16` to `2**15`, dropping gradient accumulation from 2 to 1
+- Result: `val_bpb 2.152058`, `training_seconds 323.9`, `total_seconds 832.2`, `num_steps 24`
+- Keep or discard: discard
+- What this taught us about founder prediction: throughput improved materially, but not enough to offset the quality regression; handoff notes need to track both search speed and model quality so a future agent does not keep a faster but weaker baseline
+- Next move: revert to the best commit, then test a lower-complexity architecture change that cuts wall-clock without cutting effective batch size
+
+## Driver Run: 2026-04-21T16:17:00
+- Commit: `374a6ec`
+- Experiment: reduce total batch size to `2**15`
+- Status: discard
+- val_bpb: `2.152058`
+- training_seconds: `323.9`
+- total_seconds: `832.2`
+- memory_gb: `0.0`
+- Handoff note: faster wall-clock than baseline (`832.2s` vs `1233.9s`) but worse objective; do not keep this as the branch baseline
 
 ## Active Run Template
 
