@@ -32,3 +32,4 @@ b29ad6b	1.647907	0.0	discard	raise ADAM_BETAS beta1 from 0.8 to 0.85
 832c907	1.871419	0.0	discard	set WINDOW_PATTERN from 'L' to 'LS' — full attention in layer 0, half-context in layer 1, full in layer 2
 68833d1	1.940620	0.0	discard	raise ASPECT_RATIO from 64 to 80; model_dim goes from 256 to 384
 9c2c026	1.684874	0.0	discard	increase ns_steps from 5 to 6 in the MuonAdamW optimizer call
+9d88d86	2.058078	0.0	discard	change get_muon_momentum warmup from 300 steps to 80 steps so momentum reaches 0.95 before cooldown

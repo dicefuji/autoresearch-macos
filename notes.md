@@ -434,3 +434,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: one more Newton-Schulz step gives a more accurate polar factor; marginal cost on MPS
 - Next move: if no improvement, ns_steps=5 is sufficient
+
+## Driver Run: 2026-04-22T15:59:16
+- Commit: `9d88d86`
+- Experiment: change get_muon_momentum warmup from 300 steps to 80 steps so momentum reaches 0.95 before cooldown
+- Status: discard
+- Log: `001-9d88d86.log`
+- val_bpb: `2.058078`
+- training_seconds: `342.6`
+- total_seconds: `782.6`
+- memory_gb: `0.0`
+- Hypothesis: we do ~110 steps per run; the 300-step warmup means momentum never exceeds ~0.89, effectively training with sub-optimal Muon momentum the whole time
+- Next move: if better, also try starting momentum at 0.90 instead of 0.85
