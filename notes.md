@@ -170,3 +170,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: the depth-3 model may still be slightly overstepping in the matrix group
 - Next move: if this degrades sharply, matrix LR is probably already near the sweet spot
+
+## Driver Run: 2026-04-22T01:28:07
+- Commit: `69a7274`
+- Experiment: lower SCALAR_LR from 0.35 to 0.30 on the current best checkpoint
+- Status: discard
+- Log: `002-69a7274.log`
+- val_bpb: `1.641866`
+- training_seconds: `300.6`
+- total_seconds: `561.6`
+- memory_gb: `0.0`
+- Hypothesis: per-layer scalars may still be moving too aggressively early in the run
+- Next move: if this helps, try a more conservative scalar LR after restoring the best run
