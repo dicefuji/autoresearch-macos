@@ -242,3 +242,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: the best checkpoint may benefit from spending less of the fixed budget in cooldown without adding the warmup that hurt before
 - Next move: if this regresses, keep the original schedule shape
+
+## Driver Run: 2026-04-22T10:15:41
+- Commit: `cce4abe`
+- Experiment: set WARMDOWN_RATIO from 0.4 to 0.35 — more steps at peak LR
+- Status: discard
+- Log: `001-cce4abe.log`
+- val_bpb: `1.623379`
+- training_seconds: `301.7`
+- total_seconds: `562.0`
+- memory_gb: `0.0`
+- Hypothesis: 0.4 helped; 0.35 gives even more peak-LR time in the 5-min budget
+- Next move: if better, try 0.3; if worse, 0.4 is the sweet spot
