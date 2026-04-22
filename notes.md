@@ -266,3 +266,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: model may benefit from spending even less time in cooldown
 - Next move: if worse than 0.35 experiment, stop here
+
+## Driver Run: 2026-04-22T10:35:08
+- Commit: `21860c4`
+- Experiment: lower SCALAR_LR from 0.25 to 0.20
+- Status: discard
+- Log: `003-21860c4.log`
+- val_bpb: `1.716475`
+- training_seconds: `315.6`
+- total_seconds: `598.2`
+- memory_gb: `0.0`
+- Hypothesis: the downward trend in scalar LR may continue to help
+- Next move: if worse, 0.25 is the sweet spot
