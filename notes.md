@@ -230,3 +230,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 0.1 was too weak, but 0.15 may preserve regularization while avoiding under-training
 - Next move: if this is still worse, the original weight decay is likely correct
+
+## Driver Run: 2026-04-22T02:15:15
+- Commit: `824597a`
+- Experiment: set WARMDOWN_RATIO from 0.5 to 0.4 while keeping no warmup and zero final LR
+- Status: keep
+- Log: `007-824597a.log`
+- val_bpb: `1.621708`
+- training_seconds: `300.3`
+- total_seconds: `553.3`
+- memory_gb: `0.0`
+- Hypothesis: the best checkpoint may benefit from spending less of the fixed budget in cooldown without adding the warmup that hurt before
+- Next move: if this regresses, keep the original schedule shape
