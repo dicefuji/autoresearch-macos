@@ -398,3 +398,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: larger effective batch may give more stable gradient estimates and better val_bpb per optimizer step
 - Next move: if worse, the current batch size is well-tuned; if better, consider 2^18
+
+## Driver Run: 2026-04-22T15:22:30
+- Commit: `832c907`
+- Experiment: set WINDOW_PATTERN from 'L' to 'LS' — full attention in layer 0, half-context in layer 1, full in layer 2
+- Status: discard
+- Log: `006-832c907.log`
+- val_bpb: `1.871419`
+- training_seconds: `300.8`
+- total_seconds: `595.1`
+- memory_gb: `0.0`
+- Hypothesis: pure-L gave worse results before, but with the current better-tuned schedule the small efficiency gain may make up the difference
+- Next move: if worse, keep all-L; the previous experiment showed this costs ~0.005 val_bpb
