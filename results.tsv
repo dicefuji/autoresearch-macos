@@ -47,3 +47,4 @@ e59235e	1.555866	0.0	keep	try MATRIX_LR=0.035 on depth-2 — slightly more aggre
 3c3f680	1.521804	0.0	keep	lower SCALAR_LR from 0.20 to 0.15 — continuing the downward trend that worked for depth-2
 e42e37e	1.529672	0.0	discard	raise MATRIX_LR from 0.035 to 0.04 — continuing the upward trend for Muon in depth-2
 2d94c45	1.526849	0.0	discard	raise WARMDOWN_RATIO from 0.35 to 0.40 — continuing the trend toward more cooldown in depth-2
+4769123	1.531466	0.0	discard	lower EMBEDDING_LR from 0.45 to 0.40 — was worse for depth-3 but depth-2 LRs are generally lower

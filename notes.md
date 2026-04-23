@@ -614,3 +614,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 0.30→0.35 improved; the depth-2 model with more steps may benefit from even more gradual cooldown
 - Next move: if worse, 0.35 is optimal for depth-2
+
+## Driver Run: 2026-04-23T00:06:44
+- Commit: `4769123`
+- Experiment: lower EMBEDDING_LR from 0.45 to 0.40 — was worse for depth-3 but depth-2 LRs are generally lower
+- Status: discard
+- Log: `004-4769123.log`
+- val_bpb: `1.531466`
+- training_seconds: `301.0`
+- total_seconds: `504.7`
+- memory_gb: `0.0`
+- Hypothesis: SCALAR_LR and MATRIX_LR both shifted for depth-2; embedding LR may also want to move
+- Next move: if worse, 0.45 is correct; if better, try 0.35
