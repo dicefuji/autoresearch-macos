@@ -1,73 +1,73 @@
 [
   {
-    "commit_message": "Lower SCALAR_LR to 0.15 on depth-2",
-    "description": "lower SCALAR_LR from 0.20 to 0.15 — continuing the downward trend that worked for depth-2",
-    "hypothesis": "0.25→0.20 helped for depth-2; 0.15 may help further given more gradient steps",
-    "next_move": "if worse, 0.20 is the floor; if better, try 0.10",
+    "commit_message": "Lower SCALAR_LR to 0.10",
+    "description": "lower SCALAR_LR from 0.15 to 0.10 — continuing the consistent downward trend",
+    "hypothesis": "0.35→0.25→0.20→0.15 all improved; 0.10 may help further with ~170 gradient steps",
+    "next_move": "if worse, 0.15 is the floor; if better, try 0.07",
     "replacements": [
       {
-        "old": "SCALAR_LR = 0.20        # learning rate for per-layer scalars (Adam)",
-        "new": "SCALAR_LR = 0.15        # learning rate for per-layer scalars (Adam)"
+        "old": "SCALAR_LR = 0.15        # learning rate for per-layer scalars (Adam)",
+        "new": "SCALAR_LR = 0.10        # learning rate for per-layer scalars (Adam)"
       }
     ]
   },
   {
-    "commit_message": "Raise MATRIX_LR to 0.04 on depth-2",
-    "description": "raise MATRIX_LR from 0.035 to 0.04 — continuing the upward trend for Muon in depth-2",
-    "hypothesis": "0.03→0.035 helped; 0.04 may help further given more gradient steps available",
-    "next_move": "if worse, 0.035 is the ceiling; if better, try 0.045",
+    "commit_message": "Try SCALAR_LR=0.12 as intermediate",
+    "description": "try SCALAR_LR=0.12 between the successful 0.15 and next probe 0.10",
+    "hypothesis": "if 0.10 is too aggressive a drop, 0.12 may find the true minimum",
+    "next_move": "compare with 0.10 result; keep the better of the two",
+    "replacements": [
+      {
+        "old": "SCALAR_LR = 0.15        # learning rate for per-layer scalars (Adam)",
+        "new": "SCALAR_LR = 0.12        # learning rate for per-layer scalars (Adam)"
+      }
+    ]
+  },
+  {
+    "commit_message": "Fine-tune MATRIX_LR to 0.038",
+    "description": "try MATRIX_LR=0.038 between the kept 0.035 and the failed 0.040",
+    "hypothesis": "0.040 was only slightly worse than 0.035; 0.038 may find the peak in the narrow sweet spot",
+    "next_move": "if better than 0.035, search between 0.038 and 0.040; if worse, 0.035 is correct",
     "replacements": [
       {
         "old": "MATRIX_LR = 0.035       # learning rate for matrix parameters (Muon)",
-        "new": "MATRIX_LR = 0.040       # learning rate for matrix parameters (Muon)"
+        "new": "MATRIX_LR = 0.038       # learning rate for matrix parameters (Muon)"
       }
     ]
   },
   {
-    "commit_message": "Lengthen warmdown to 0.40 on depth-2",
-    "description": "raise WARMDOWN_RATIO from 0.35 to 0.40 — continuing the trend toward more cooldown in depth-2",
-    "hypothesis": "0.30→0.35 improved; the depth-2 model with more steps may benefit from even more gradual cooldown",
-    "next_move": "if worse, 0.35 is optimal for depth-2",
-    "replacements": [
-      {
-        "old": "WARMDOWN_RATIO = 0.35   # fraction of time budget for LR warmdown",
-        "new": "WARMDOWN_RATIO = 0.40   # fraction of time budget for LR warmdown"
-      }
-    ]
-  },
-  {
-    "commit_message": "Lower EMBEDDING_LR to 0.40 on depth-2",
-    "description": "lower EMBEDDING_LR from 0.45 to 0.40 — was worse for depth-3 but depth-2 LRs are generally lower",
-    "hypothesis": "SCALAR_LR and MATRIX_LR both shifted for depth-2; embedding LR may also want to move",
-    "next_move": "if worse, 0.45 is correct; if better, try 0.35",
+    "commit_message": "Try EMBEDDING_LR=0.42 on depth-2",
+    "description": "try EMBEDDING_LR=0.42 between the current 0.45 and failed 0.40",
+    "hypothesis": "0.40 was close to current best (1.531 vs 1.522); 0.42 may capture some improvement without going too far",
+    "next_move": "if better than 0.45, try 0.40 again from the new base",
     "replacements": [
       {
         "old": "EMBEDDING_LR = 0.45     # learning rate for token embeddings (Adam)",
-        "new": "EMBEDDING_LR = 0.40     # learning rate for token embeddings (Adam)"
+        "new": "EMBEDDING_LR = 0.42     # learning rate for token embeddings (Adam)"
       }
     ]
   },
   {
-    "commit_message": "Raise UNEMBEDDING_LR to 0.006 on depth-2",
-    "description": "raise UNEMBEDDING_LR from 0.005 to 0.006 — was badly worse for depth-3 but depth-2 may tolerate it",
-    "hypothesis": "the lm_head may need a stronger signal in the depth-2 regime given fewer parameters total",
-    "next_move": "if worse, 0.005 is still correct; if better, the pattern has shifted",
+    "commit_message": "Try WARMDOWN_RATIO=0.38 on depth-2",
+    "description": "try WARMDOWN_RATIO=0.38 between the kept 0.35 and failed 0.40",
+    "hypothesis": "0.35 and 0.40 were close (1.562 vs 1.527); 0.38 may be near the optimum in this narrow band",
+    "next_move": "if better than 0.35, the sweet spot is between 0.35 and 0.40",
     "replacements": [
       {
-        "old": "UNEMBEDDING_LR = 0.005  # learning rate for lm_head (Adam)",
-        "new": "UNEMBEDDING_LR = 0.006  # learning rate for lm_head (Adam)"
+        "old": "WARMDOWN_RATIO = 0.35   # fraction of time budget for LR warmdown",
+        "new": "WARMDOWN_RATIO = 0.38   # fraction of time budget for LR warmdown"
       }
     ]
   },
   {
-    "commit_message": "Raise WEIGHT_DECAY to 0.25 on depth-2",
-    "description": "raise WEIGHT_DECAY from 0.2 to 0.25 — more regularization with higher MATRIX_LR",
-    "hypothesis": "MATRIX_LR increased from 0.03 to 0.035; slightly more weight decay may compensate and prevent Muon overshooting",
-    "next_move": "if worse, weight decay was fine at 0.2; if better, the higher LR needs more regularization",
+    "commit_message": "DEVICE_BATCH_SIZE=32 eliminates gradient accumulation",
+    "description": "raise DEVICE_BATCH_SIZE from 16 to 32 so grad_accum_steps becomes 1 (single forward pass per step)",
+    "hypothesis": "removing gradient accumulation may be faster on MPS and give slightly cleaner optimizer behavior with no multi-step gradient approximation",
+    "next_move": "if OOM or worse, keep DEVICE_BATCH_SIZE=16; if better, MPS benefits from larger single batches",
     "replacements": [
       {
-        "old": "WEIGHT_DECAY = 0.2      # cautious weight decay for Muon",
-        "new": "WEIGHT_DECAY = 0.25     # cautious weight decay for Muon"
+        "old": "DEVICE_BATCH_SIZE = 16  # per-device batch size (reduce if OOM)",
+        "new": "DEVICE_BATCH_SIZE = 32  # per-device batch size (reduce if OOM)"
       }
     ]
   }
