@@ -1,73 +1,75 @@
 [
   {
-    "commit_message": "Lower SCALAR_LR to 0.10",
-    "description": "lower SCALAR_LR from 0.15 to 0.10 — continuing the consistent downward trend",
-    "hypothesis": "0.35→0.25→0.20→0.15 all improved; 0.10 may help further with ~170 gradient steps",
-    "next_move": "if worse, 0.15 is the floor; if better, try 0.07",
+    "commit_message": "Try GELU activation instead of ReLU^2",
+    "description": "replace F.relu(x).square() with F.gelu(x) in MLP",
+    "hypothesis": "GELU is smoother and may converge better for depth-2 with ~170 steps; ReLU^2 is tuned for longer runs",
+    "next_move": "if worse, ReLU^2 is better for this task; if better, consider SiLU as well",
     "replacements": [
       {
-        "old": "SCALAR_LR = 0.15        # learning rate for per-layer scalars (Adam)",
-        "new": "SCALAR_LR = 0.10        # learning rate for per-layer scalars (Adam)"
+        "old": "        x = F.relu(x).square()",
+        "new": "        x = F.gelu(x)"
       }
     ]
   },
   {
-    "commit_message": "Try SCALAR_LR=0.12 as intermediate",
-    "description": "try SCALAR_LR=0.12 between the successful 0.15 and next probe 0.10",
-    "hypothesis": "if 0.10 is too aggressive a drop, 0.12 may find the true minimum",
-    "next_move": "compare with 0.10 result; keep the better of the two",
+    "commit_message": "Narrow MLP to 3x expansion",
+    "description": "change MLP from 4x to 3x hidden dimension expansion",
+    "hypothesis": "fewer MLP parameters = faster forward pass = more optimizer steps in 5 min — same logic that made depth=2 beat depth=3",
+    "next_move": "if better, try 2x; if worse, 4x is right",
     "replacements": [
       {
-        "old": "SCALAR_LR = 0.15        # learning rate for per-layer scalars (Adam)",
-        "new": "SCALAR_LR = 0.12        # learning rate for per-layer scalars (Adam)"
+        "old": "4 * config.n_embd",
+        "new": "3 * config.n_embd",
+        "count": 2
       }
     ]
   },
   {
-    "commit_message": "Fine-tune MATRIX_LR to 0.038",
-    "description": "try MATRIX_LR=0.038 between the kept 0.035 and the failed 0.040",
-    "hypothesis": "0.040 was only slightly worse than 0.035; 0.038 may find the peak in the narrow sweet spot",
-    "next_move": "if better than 0.035, search between 0.038 and 0.040; if worse, 0.035 is correct",
+    "commit_message": "Add gradient clipping at 1.0",
+    "description": "add torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0) before optimizer.step()",
+    "hypothesis": "no gradient clipping is currently applied; clipping at 1.0 may stabilize Adam param updates and improve convergence",
+    "next_move": "if better, try tighter clip at 0.5; if worse, the model is stable enough without clipping",
     "replacements": [
       {
-        "old": "MATRIX_LR = 0.035       # learning rate for matrix parameters (Muon)",
-        "new": "MATRIX_LR = 0.038       # learning rate for matrix parameters (Muon)"
+        "old": "    optimizer.step()\n    model.zero_grad(set_to_none=True)",
+        "new": "    torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)\n    optimizer.step()\n    model.zero_grad(set_to_none=True)"
       }
     ]
   },
   {
-    "commit_message": "Try EMBEDDING_LR=0.42 on depth-2",
-    "description": "try EMBEDDING_LR=0.42 between the current 0.45 and failed 0.40",
-    "hypothesis": "0.40 was close to current best (1.531 vs 1.522); 0.42 may capture some improvement without going too far",
-    "next_move": "if better than 0.45, try 0.40 again from the new base",
+    "commit_message": "HEAD_DIM=64 depth-2 model — 3 heads, model_dim=192",
+    "description": "change HEAD_DIM from 128 to 64; model_dim becomes 192 with 3 attention heads",
+    "hypothesis": "more attention heads with smaller dim may help the 2-layer model attend to more diverse patterns; model_dim shrinks slightly giving even more steps",
+    "next_move": "if better, tune LRs for this config; if worse, 2-head 256-dim is optimal",
     "replacements": [
       {
-        "old": "EMBEDDING_LR = 0.45     # learning rate for token embeddings (Adam)",
-        "new": "EMBEDDING_LR = 0.42     # learning rate for token embeddings (Adam)"
+        "old": "HEAD_DIM = 128          # target head dimension for attention",
+        "new": "HEAD_DIM = 64           # target head dimension for attention"
       }
     ]
   },
   {
-    "commit_message": "Try WARMDOWN_RATIO=0.38 on depth-2",
-    "description": "try WARMDOWN_RATIO=0.38 between the kept 0.35 and failed 0.40",
-    "hypothesis": "0.35 and 0.40 were close (1.562 vs 1.527); 0.38 may be near the optimum in this narrow band",
-    "next_move": "if better than 0.35, the sweet spot is between 0.35 and 0.40",
+    "commit_message": "Wider MLP 6x expansion on depth-2",
+    "description": "change MLP from 4x to 6x hidden dimension expansion",
+    "hypothesis": "depth-2 has fewer layers but with more steps; a wider MLP per layer might compensate for the lack of depth with more capacity per block",
+    "next_move": "if better, depth-2 benefits from wider MLPs; if worse, 4x is well-calibrated",
     "replacements": [
       {
-        "old": "WARMDOWN_RATIO = 0.35   # fraction of time budget for LR warmdown",
-        "new": "WARMDOWN_RATIO = 0.38   # fraction of time budget for LR warmdown"
+        "old": "4 * config.n_embd",
+        "new": "6 * config.n_embd",
+        "count": 2
       }
     ]
   },
   {
-    "commit_message": "DEVICE_BATCH_SIZE=32 eliminates gradient accumulation",
-    "description": "raise DEVICE_BATCH_SIZE from 16 to 32 so grad_accum_steps becomes 1 (single forward pass per step)",
-    "hypothesis": "removing gradient accumulation may be faster on MPS and give slightly cleaner optimizer behavior with no multi-step gradient approximation",
-    "next_move": "if OOM or worse, keep DEVICE_BATCH_SIZE=16; if better, MPS benefits from larger single batches",
+    "commit_message": "MQA: n_kv_head=1 for depth-2",
+    "description": "change n_kv_head from num_heads to 1 in build_model_config — multi-query attention with 1 shared KV head",
+    "hypothesis": "MQA reduces KV parameters; the saved capacity and compute may allow more effective steps in the 5-min budget",
+    "next_move": "if better, MQA suits the short-run regime; if worse, full per-head KV is needed",
     "replacements": [
       {
-        "old": "DEVICE_BATCH_SIZE = 16  # per-device batch size (reduce if OOM)",
-        "new": "DEVICE_BATCH_SIZE = 32  # per-device batch size (reduce if OOM)"
+        "old": "        n_layer=depth, n_head=num_heads, n_kv_head=num_heads, n_embd=model_dim,",
+        "new": "        n_layer=depth, n_head=num_heads, n_kv_head=1, n_embd=model_dim,"
       }
     ]
   }
