@@ -686,3 +686,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 0.040 was only slightly worse than 0.035; 0.038 may find the peak in the narrow sweet spot
 - Next move: if better than 0.035, search between 0.038 and 0.040; if worse, 0.035 is correct
+
+## Driver Run: 2026-04-23T01:58:43
+- Commit: `4cb12f4`
+- Experiment: try EMBEDDING_LR=0.42 between the current 0.45 and failed 0.40
+- Status: discard
+- Log: `004-4cb12f4.log`
+- val_bpb: `1.536203`
+- training_seconds: `300.7`
+- total_seconds: `505.0`
+- memory_gb: `0.0`
+- Hypothesis: 0.40 was close to current best (1.531 vs 1.522); 0.42 may capture some improvement without going too far
+- Next move: if better than 0.45, try 0.40 again from the new base
