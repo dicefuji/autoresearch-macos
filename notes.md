@@ -506,3 +506,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: depth=3 beat depth=4 largely due to more steps in the fixed budget; depth=2 gets even more steps — capacity vs. iteration count tradeoff
 - Next move: if clearly worse, depth=3 has the right capacity; if competitive, try depth=2 with tuned LRs
+
+## Driver Run: 2026-04-22T17:05:49
+- Commit: `cfcd4d0`
+- Experiment: retry WARMDOWN_RATIO=0.25 on the depth-2 checkpoint (was catastrophic for depth-3 but depth-2 has ~50% more steps)
+- Status: discard
+- Log: `001-cfcd4d0.log`
+- val_bpb: `1.683845`
+- training_seconds: `305.4`
+- total_seconds: `539.6`
+- memory_gb: `0.0`
+- Hypothesis: depth-2 gets ~170 steps; 0.25 warmdown means ~43 steps of cooldown which may be adequate unlike for depth-3
+- Next move: if still terrible, 0.30 is the floor regardless of depth; if better, try 0.20
