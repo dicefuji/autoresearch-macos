@@ -49,3 +49,4 @@ e42e37e	1.529672	0.0	discard	raise MATRIX_LR from 0.035 to 0.04 — continuing t
 2d94c45	1.526849	0.0	discard	raise WARMDOWN_RATIO from 0.35 to 0.40 — continuing the trend toward more cooldown in depth-2
 4769123	1.531466	0.0	discard	lower EMBEDDING_LR from 0.45 to 0.40 — was worse for depth-3 but depth-2 LRs are generally lower
 4f8f00a	1.600924	0.0	discard	raise UNEMBEDDING_LR from 0.005 to 0.006 — was badly worse for depth-3 but depth-2 may tolerate it
+004d232	1.548570	0.0	discard	raise WEIGHT_DECAY from 0.2 to 0.25 — more regularization with higher MATRIX_LR

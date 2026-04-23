@@ -638,3 +638,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: the lm_head may need a stronger signal in the depth-2 regime given fewer parameters total
 - Next move: if worse, 0.005 is still correct; if better, the pattern has shifted
+
+## Driver Run: 2026-04-23T00:23:47
+- Commit: `004d232`
+- Experiment: raise WEIGHT_DECAY from 0.2 to 0.25 — more regularization with higher MATRIX_LR
+- Status: discard
+- Log: `006-004d232.log`
+- val_bpb: `1.548570`
+- training_seconds: `301.7`
+- total_seconds: `503.3`
+- memory_gb: `0.0`
+- Hypothesis: MATRIX_LR increased from 0.03 to 0.035; slightly more weight decay may compensate and prevent Muon overshooting
+- Next move: if worse, weight decay was fine at 0.2; if better, the higher LR needs more regularization
