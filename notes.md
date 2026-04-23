@@ -826,3 +826,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 3x MLP changes forward dynamics; Muon may now tolerate a slightly higher LR
 - Next move: if better, the MLP change shifted the optimal MATRIX_LR; if worse, 0.035 is still correct
+
+## Driver Run: 2026-04-23T13:15:59
+- Commit: `2fd0885`
+- Experiment: change MLP from 3x to 5x hidden dimension expansion
+- Status: discard
+- Log: `006-2fd0885.log`
+- val_bpb: `1.588239`
+- training_seconds: `300.7`
+- total_seconds: `502.1`
+- memory_gb: `0.0`
+- Hypothesis: depth-2 has only 2 blocks; a wider MLP may compensate for less depth with more per-layer capacity
+- Next move: if better, more capacity per block wins over compute savings; try 6x
