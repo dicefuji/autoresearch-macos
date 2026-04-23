@@ -674,3 +674,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: if 0.10 is too aggressive a drop, 0.12 may find the true minimum
 - Next move: compare with 0.10 result; keep the better of the two
+
+## Driver Run: 2026-04-23T01:50:11
+- Commit: `7494da1`
+- Experiment: try MATRIX_LR=0.038 between the kept 0.035 and the failed 0.040
+- Status: discard
+- Log: `003-7494da1.log`
+- val_bpb: `1.560370`
+- training_seconds: `301.5`
+- total_seconds: `519.4`
+- memory_gb: `0.0`
+- Hypothesis: 0.040 was only slightly worse than 0.035; 0.038 may find the peak in the narrow sweet spot
+- Next move: if better than 0.035, search between 0.038 and 0.040; if worse, 0.035 is correct

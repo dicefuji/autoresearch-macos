@@ -52,3 +52,4 @@ e42e37e	1.529672	0.0	discard	raise MATRIX_LR from 0.035 to 0.04 — continuing t
 004d232	1.548570	0.0	discard	raise WEIGHT_DECAY from 0.2 to 0.25 — more regularization with higher MATRIX_LR
 4b062e5	1.574957	0.0	discard	lower SCALAR_LR from 0.15 to 0.10 — continuing the consistent downward trend
 904ad57	1.701597	0.0	discard	try SCALAR_LR=0.12 between the successful 0.15 and next probe 0.10
+7494da1	1.560370	0.0	discard	try MATRIX_LR=0.038 between the kept 0.035 and the failed 0.040
