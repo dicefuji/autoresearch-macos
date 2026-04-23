@@ -778,3 +778,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 4x→3x barely helped; 2x may give more optimizer steps at the cost of less MLP capacity
 - Next move: if better, the trend is real; if worse, 3x is the sweet spot
+
+## Driver Run: 2026-04-23T12:42:34
+- Commit: `13c820f`
+- Experiment: change n_kv_head from num_heads (2) to 1 in build_model_config
+- Status: discard
+- Log: `002-13c820f.log`
+- val_bpb: `1.548254`
+- training_seconds: `300.8`
+- total_seconds: `500.7`
+- memory_gb: `0.0`
+- Hypothesis: single shared KV head saves parameters and compute; may allow more steps and better generalization
+- Next move: if better, MQA works well for the short-run regime; if worse, 2 KV heads is needed

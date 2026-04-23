@@ -61,3 +61,4 @@ b1eaf41	1.557714	0.0	discard	replace F.relu(x).square() with F.gelu(x) in MLP
 c3aaf31	1.532576	0.0	discard	add torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0) before optimizer.step()
 a3a3217	1.588410	0.0	discard	change HEAD_DIM from 128 to 64; model_dim becomes 192 with 3 attention heads
 4c69bfd	1.574627	0.0	discard	change MLP from 3x to 2x hidden dimension expansion
+13c820f	1.548254	0.0	discard	change n_kv_head from num_heads (2) to 1 in build_model_config
