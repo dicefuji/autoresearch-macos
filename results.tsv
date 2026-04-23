@@ -43,3 +43,4 @@ da48886	1.561836	0.0	keep	try WARMDOWN_RATIO=0.35 on depth-2 — slightly more c
 0053eca	1.580155	0.0	discard	retry MATRIX_LR=0.025 on depth-2 (was worse for depth-3 but depth-2 has different gradient dynamics)
 e59235e	1.555866	0.0	keep	try MATRIX_LR=0.035 on depth-2 — slightly more aggressive Muon
 35e3679	1.541022	0.0	keep	retry SCALAR_LR=0.20 on depth-2 (was much worse for depth-3 but depth-2 has different convergence speed)
+84824c1	1.568834	0.0	discard	set DEPTH=1 and ASPECT_RATIO=192 (model_dim=256, 1 layer, potentially 3x more steps than depth-3)

@@ -566,3 +566,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: with ~170 steps, per-layer scalars may converge fine with a gentler 0.20 update rate
 - Next move: if worse, 0.25 is correct; if better, try 0.15
+
+## Driver Run: 2026-04-22T17:48:03
+- Commit: `84824c1`
+- Experiment: set DEPTH=1 and ASPECT_RATIO=192 (model_dim=256, 1 layer, potentially 3x more steps than depth-3)
+- Status: discard
+- Log: `006-84824c1.log`
+- val_bpb: `1.568834`
+- training_seconds: `300.1`
+- total_seconds: `455.0`
+- memory_gb: `0.0`
+- Hypothesis: if the depth-3→depth-2 improvement comes purely from more gradient steps, depth-1 should win; tests the capacity floor
+- Next move: if competitive, tune LRs for depth-1; if badly worse, depth-2 is the sweet spot for capacity vs. steps
