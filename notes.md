@@ -742,3 +742,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: fewer MLP parameters = faster forward pass = more optimizer steps in 5 min — same logic that made depth=2 beat depth=3
 - Next move: if better, try 2x; if worse, 4x is right
+
+## Driver Run: 2026-04-23T10:00:54
+- Commit: `c3aaf31`
+- Experiment: add torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0) before optimizer.step()
+- Status: discard
+- Log: `003-c3aaf31.log`
+- val_bpb: `1.532576`
+- training_seconds: `300.4`
+- total_seconds: `498.6`
+- memory_gb: `0.0`
+- Hypothesis: no gradient clipping is currently applied; clipping at 1.0 may stabilize Adam param updates and improve convergence
+- Next move: if better, try tighter clip at 0.5; if worse, the model is stable enough without clipping
