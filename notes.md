@@ -578,3 +578,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: if the depth-3→depth-2 improvement comes purely from more gradient steps, depth-1 should win; tests the capacity floor
 - Next move: if competitive, tune LRs for depth-1; if badly worse, depth-2 is the sweet spot for capacity vs. steps
+
+## Driver Run: 2026-04-22T23:41:09
+- Commit: `3c3f680`
+- Experiment: lower SCALAR_LR from 0.20 to 0.15 — continuing the downward trend that worked for depth-2
+- Status: keep
+- Log: `001-3c3f680.log`
+- val_bpb: `1.521804`
+- training_seconds: `301.2`
+- total_seconds: `505.8`
+- memory_gb: `0.0`
+- Hypothesis: 0.25→0.20 helped for depth-2; 0.15 may help further given more gradient steps
+- Next move: if worse, 0.20 is the floor; if better, try 0.10
