@@ -698,3 +698,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 0.40 was close to current best (1.531 vs 1.522); 0.42 may capture some improvement without going too far
 - Next move: if better than 0.45, try 0.40 again from the new base
+
+## Driver Run: 2026-04-23T02:07:14
+- Commit: `ddf3bc6`
+- Experiment: try WARMDOWN_RATIO=0.38 between the kept 0.35 and failed 0.40
+- Status: discard
+- Log: `005-ddf3bc6.log`
+- val_bpb: `1.529415`
+- training_seconds: `301.6`
+- total_seconds: `504.1`
+- memory_gb: `0.0`
+- Hypothesis: 0.35 and 0.40 were close (1.562 vs 1.527); 0.38 may be near the optimum in this narrow band
+- Next move: if better than 0.35, the sweet spot is between 0.35 and 0.40
