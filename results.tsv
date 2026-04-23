@@ -41,3 +41,4 @@ a13c37e	1.686451	0.0	discard	raise Muon beta2 from 0.95 to 0.98 for slower varia
 cfcd4d0	1.683845	0.0	discard	retry WARMDOWN_RATIO=0.25 on the depth-2 checkpoint (was catastrophic for depth-3 but depth-2 has ~50% more steps)
 da48886	1.561836	0.0	keep	try WARMDOWN_RATIO=0.35 on depth-2 — slightly more cooldown
 0053eca	1.580155	0.0	discard	retry MATRIX_LR=0.025 on depth-2 (was worse for depth-3 but depth-2 has different gradient dynamics)
+e59235e	1.555866	0.0	keep	try MATRIX_LR=0.035 on depth-2 — slightly more aggressive Muon

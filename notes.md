@@ -542,3 +542,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: with 2 layers the Muon updates are applied more frequently per token; a gentler step may work better
 - Next move: if worse, 0.03 is correct for depth-2 as well
+
+## Driver Run: 2026-04-22T17:31:40
+- Commit: `e59235e`
+- Experiment: try MATRIX_LR=0.035 on depth-2 — slightly more aggressive Muon
+- Status: keep
+- Log: `004-e59235e.log`
+- val_bpb: `1.555866`
+- training_seconds: `300.8`
+- total_seconds: `507.5`
+- memory_gb: `0.0`
+- Hypothesis: depth-2 with more gradient steps may tolerate a slightly higher Muon LR; we only tried 0.03 and 0.032 before on depth-3
+- Next move: if better, try 0.04; if worse, 0.03 is correct
