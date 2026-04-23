@@ -662,3 +662,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 0.35→0.25→0.20→0.15 all improved; 0.10 may help further with ~170 gradient steps
 - Next move: if worse, 0.15 is the floor; if better, try 0.07
+
+## Driver Run: 2026-04-23T01:41:23
+- Commit: `904ad57`
+- Experiment: try SCALAR_LR=0.12 between the successful 0.15 and next probe 0.10
+- Status: discard
+- Log: `002-904ad57.log`
+- val_bpb: `1.701597`
+- training_seconds: `303.9`
+- total_seconds: `519.8`
+- memory_gb: `0.0`
+- Hypothesis: if 0.10 is too aggressive a drop, 0.12 may find the true minimum
+- Next move: compare with 0.10 result; keep the better of the two
