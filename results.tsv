@@ -64,3 +64,4 @@ a3a3217	1.588410	0.0	discard	change HEAD_DIM from 128 to 64; model_dim becomes 1
 13c820f	1.548254	0.0	discard	change n_kv_head from num_heads (2) to 1 in build_model_config
 15fd551	1.529756	0.0	discard	change RoPE base frequency from 10000 to 2000
 21ac9f1	1.479357	0.0	keep	halve TOTAL_BATCH_SIZE from 2^16 to 2^15, eliminating gradient accumulation and doubling optimizer steps
+829b4ea	1.472796	0.0	keep	retry MATRIX_LR=0.04 on the 3x MLP checkpoint (previously tested on 4x MLP)

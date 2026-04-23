@@ -814,3 +814,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: was bad on depth-4 baseline; with tuned depth-2 and 3x MLP the extra steps may now outweigh the noisier gradients
 - Next move: if still worse, 2^16 is correct for this model size; if better, the step-count advantage dominates
+
+## Driver Run: 2026-04-23T13:07:29
+- Commit: `829b4ea`
+- Experiment: retry MATRIX_LR=0.04 on the 3x MLP checkpoint (previously tested on 4x MLP)
+- Status: keep
+- Log: `005-829b4ea.log`
+- val_bpb: `1.472796`
+- training_seconds: `300.2`
+- total_seconds: `488.1`
+- memory_gb: `0.0`
+- Hypothesis: 3x MLP changes forward dynamics; Muon may now tolerate a slightly higher LR
+- Next move: if better, the MLP change shifted the optimal MATRIX_LR; if worse, 0.035 is still correct
