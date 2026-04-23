@@ -790,3 +790,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: single shared KV head saves parameters and compute; may allow more steps and better generalization
 - Next move: if better, MQA works well for the short-run regime; if worse, 2 KV heads is needed
+
+## Driver Run: 2026-04-23T12:50:57
+- Commit: `15fd551`
+- Experiment: change RoPE base frequency from 10000 to 2000
+- Status: discard
+- Log: `003-15fd551.log`
+- val_bpb: `1.529756`
+- training_seconds: `300.2`
+- total_seconds: `496.2`
+- memory_gb: `0.0`
+- Hypothesis: base=10000 is standard for long-context models; with MAX_SEQ_LEN=2048 a lower base may better concentrate position information in the useful range
+- Next move: if better, try 500; if worse, 10000 is fine for this context length
