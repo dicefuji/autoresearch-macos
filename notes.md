@@ -554,3 +554,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: depth-2 with more gradient steps may tolerate a slightly higher Muon LR; we only tried 0.03 and 0.032 before on depth-3
 - Next move: if better, try 0.04; if worse, 0.03 is correct
+
+## Driver Run: 2026-04-22T17:40:21
+- Commit: `35e3679`
+- Experiment: retry SCALAR_LR=0.20 on depth-2 (was much worse for depth-3 but depth-2 has different convergence speed)
+- Status: keep
+- Log: `005-35e3679.log`
+- val_bpb: `1.541022`
+- training_seconds: `302.5`
+- total_seconds: `513.0`
+- memory_gb: `0.0`
+- Hypothesis: with ~170 steps, per-layer scalars may converge fine with a gentler 0.20 update rate
+- Next move: if worse, 0.25 is correct; if better, try 0.15
