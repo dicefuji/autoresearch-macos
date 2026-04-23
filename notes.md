@@ -530,3 +530,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: depth-2 with more steps may benefit from a slightly longer cooldown that gives smoother final convergence
 - Next move: if worse, 0.30 is optimal; if better, try 0.40
+
+## Driver Run: 2026-04-22T17:23:05
+- Commit: `0053eca`
+- Experiment: retry MATRIX_LR=0.025 on depth-2 (was worse for depth-3 but depth-2 has different gradient dynamics)
+- Status: discard
+- Log: `003-0053eca.log`
+- val_bpb: `1.580155`
+- training_seconds: `301.4`
+- total_seconds: `509.2`
+- memory_gb: `0.0`
+- Hypothesis: with 2 layers the Muon updates are applied more frequently per token; a gentler step may work better
+- Next move: if worse, 0.03 is correct for depth-2 as well
