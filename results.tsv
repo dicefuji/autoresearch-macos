@@ -45,3 +45,4 @@ e59235e	1.555866	0.0	keep	try MATRIX_LR=0.035 on depth-2 — slightly more aggre
 35e3679	1.541022	0.0	keep	retry SCALAR_LR=0.20 on depth-2 (was much worse for depth-3 but depth-2 has different convergence speed)
 84824c1	1.568834	0.0	discard	set DEPTH=1 and ASPECT_RATIO=192 (model_dim=256, 1 layer, potentially 3x more steps than depth-3)
 3c3f680	1.521804	0.0	keep	lower SCALAR_LR from 0.20 to 0.15 — continuing the downward trend that worked for depth-2
+e42e37e	1.529672	0.0	discard	raise MATRIX_LR from 0.035 to 0.04 — continuing the upward trend for Muon in depth-2

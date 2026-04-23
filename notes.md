@@ -590,3 +590,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 0.25→0.20 helped for depth-2; 0.15 may help further given more gradient steps
 - Next move: if worse, 0.20 is the floor; if better, try 0.10
+
+## Driver Run: 2026-04-22T23:49:40
+- Commit: `e42e37e`
+- Experiment: raise MATRIX_LR from 0.035 to 0.04 — continuing the upward trend for Muon in depth-2
+- Status: discard
+- Log: `002-e42e37e.log`
+- val_bpb: `1.529672`
+- training_seconds: `300.4`
+- total_seconds: `504.7`
+- memory_gb: `0.0`
+- Hypothesis: 0.03→0.035 helped; 0.04 may help further given more gradient steps available
+- Next move: if worse, 0.035 is the ceiling; if better, try 0.045
