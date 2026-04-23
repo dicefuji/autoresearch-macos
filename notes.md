@@ -602,3 +602,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 0.03→0.035 helped; 0.04 may help further given more gradient steps available
 - Next move: if worse, 0.035 is the ceiling; if better, try 0.045
+
+## Driver Run: 2026-04-22T23:58:12
+- Commit: `2d94c45`
+- Experiment: raise WARMDOWN_RATIO from 0.35 to 0.40 — continuing the trend toward more cooldown in depth-2
+- Status: discard
+- Log: `003-2d94c45.log`
+- val_bpb: `1.526849`
+- training_seconds: `301.1`
+- total_seconds: `505.3`
+- memory_gb: `0.0`
+- Hypothesis: 0.30→0.35 improved; the depth-2 model with more steps may benefit from even more gradual cooldown
+- Next move: if worse, 0.35 is optimal for depth-2
