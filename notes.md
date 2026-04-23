@@ -730,3 +730,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: GELU is smoother and may converge better for depth-2 with ~170 steps; ReLU^2 is tuned for longer runs
 - Next move: if worse, ReLU^2 is better for this task; if better, consider SiLU as well
+
+## Driver Run: 2026-04-23T09:52:29
+- Commit: `626b8b2`
+- Experiment: change MLP from 4x to 3x hidden dimension expansion
+- Status: keep
+- Log: `002-626b8b2.log`
+- val_bpb: `1.521368`
+- training_seconds: `301.5`
+- total_seconds: `498.2`
+- memory_gb: `0.0`
+- Hypothesis: fewer MLP parameters = faster forward pass = more optimizer steps in 5 min — same logic that made depth=2 beat depth=3
+- Next move: if better, try 2x; if worse, 4x is right
