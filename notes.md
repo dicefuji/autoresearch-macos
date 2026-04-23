@@ -518,3 +518,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: depth-2 gets ~170 steps; 0.25 warmdown means ~43 steps of cooldown which may be adequate unlike for depth-3
 - Next move: if still terrible, 0.30 is the floor regardless of depth; if better, try 0.20
+
+## Driver Run: 2026-04-22T17:14:28
+- Commit: `da48886`
+- Experiment: try WARMDOWN_RATIO=0.35 on depth-2 — slightly more cooldown
+- Status: keep
+- Log: `002-da48886.log`
+- val_bpb: `1.561836`
+- training_seconds: `301.2`
+- total_seconds: `512.5`
+- memory_gb: `0.0`
+- Hypothesis: depth-2 with more steps may benefit from a slightly longer cooldown that gives smoother final convergence
+- Next move: if worse, 0.30 is optimal; if better, try 0.40

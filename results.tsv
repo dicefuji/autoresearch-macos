@@ -39,3 +39,4 @@ cbafe4f	1.680585	0.0	discard	raise FINAL_LR_FRAC from 0.0 to 0.1 so LR decays to
 a13c37e	1.686451	0.0	discard	raise Muon beta2 from 0.95 to 0.98 for slower variance adaptation
 14e3392	1.582612	0.0	keep	set DEPTH=2 and ASPECT_RATIO=96 (model_dim stays 256, 2 layers instead of 3, ~50% more optimizer steps)
 cfcd4d0	1.683845	0.0	discard	retry WARMDOWN_RATIO=0.25 on the depth-2 checkpoint (was catastrophic for depth-3 but depth-2 has ~50% more steps)
+da48886	1.561836	0.0	keep	try WARMDOWN_RATIO=0.35 on depth-2 — slightly more cooldown
