@@ -754,3 +754,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: no gradient clipping is currently applied; clipping at 1.0 may stabilize Adam param updates and improve convergence
 - Next move: if better, try tighter clip at 0.5; if worse, the model is stable enough without clipping
+
+## Driver Run: 2026-04-23T10:09:00
+- Commit: `a3a3217`
+- Experiment: change HEAD_DIM from 128 to 64; model_dim becomes 192 with 3 attention heads
+- Status: discard
+- Log: `004-a3a3217.log`
+- val_bpb: `1.588410`
+- training_seconds: `300.9`
+- total_seconds: `478.5`
+- memory_gb: `0.0`
+- Hypothesis: more attention heads with smaller dim may help the 2-layer model attend to more diverse patterns; model_dim shrinks slightly giving even more steps
+- Next move: if better, tune LRs for this config; if worse, 2-head 256-dim is optimal
