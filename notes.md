@@ -718,3 +718,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - Log: `006-e37b31b.log`
 - Hypothesis: removing gradient accumulation may be faster on MPS and give slightly cleaner optimizer behavior with no multi-step gradient approximation
 - Next move: if OOM or worse, keep DEVICE_BATCH_SIZE=16; if better, MPS benefits from larger single batches
+
+## Driver Run: 2026-04-23T09:44:02
+- Commit: `b1eaf41`
+- Experiment: replace F.relu(x).square() with F.gelu(x) in MLP
+- Status: discard
+- Log: `001-b1eaf41.log`
+- val_bpb: `1.557714`
+- training_seconds: `301.5`
+- total_seconds: `509.5`
+- memory_gb: `0.0`
+- Hypothesis: GELU is smoother and may converge better for depth-2 with ~170 steps; ReLU^2 is tuned for longer runs
+- Next move: if worse, ReLU^2 is better for this task; if better, consider SiLU as well
