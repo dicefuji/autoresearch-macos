@@ -650,3 +650,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: MATRIX_LR increased from 0.03 to 0.035; slightly more weight decay may compensate and prevent Muon overshooting
 - Next move: if worse, weight decay was fine at 0.2; if better, the higher LR needs more regularization
+
+## Driver Run: 2026-04-23T01:32:36
+- Commit: `4b062e5`
+- Experiment: lower SCALAR_LR from 0.15 to 0.10 — continuing the consistent downward trend
+- Status: discard
+- Log: `001-4b062e5.log`
+- val_bpb: `1.574957`
+- training_seconds: `301.1`
+- total_seconds: `514.9`
+- memory_gb: `0.0`
+- Hypothesis: 0.35→0.25→0.20→0.15 all improved; 0.10 may help further with ~170 gradient steps
+- Next move: if worse, 0.15 is the floor; if better, try 0.07
