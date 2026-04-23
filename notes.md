@@ -802,3 +802,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: base=10000 is standard for long-context models; with MAX_SEQ_LEN=2048 a lower base may better concentrate position information in the useful range
 - Next move: if better, try 500; if worse, 10000 is fine for this context length
+
+## Driver Run: 2026-04-23T12:59:14
+- Commit: `21ac9f1`
+- Experiment: halve TOTAL_BATCH_SIZE from 2^16 to 2^15, eliminating gradient accumulation and doubling optimizer steps
+- Status: keep
+- Log: `004-21ac9f1.log`
+- val_bpb: `1.479357`
+- training_seconds: `300.2`
+- total_seconds: `490.3`
+- memory_gb: `0.0`
+- Hypothesis: was bad on depth-4 baseline; with tuned depth-2 and 3x MLP the extra steps may now outweigh the noisier gradients
+- Next move: if still worse, 2^16 is correct for this model size; if better, the step-count advantage dominates
