@@ -626,3 +626,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: SCALAR_LR and MATRIX_LR both shifted for depth-2; embedding LR may also want to move
 - Next move: if worse, 0.45 is correct; if better, try 0.35
+
+## Driver Run: 2026-04-23T00:15:16
+- Commit: `4f8f00a`
+- Experiment: raise UNEMBEDDING_LR from 0.005 to 0.006 — was badly worse for depth-3 but depth-2 may tolerate it
+- Status: discard
+- Log: `005-4f8f00a.log`
+- val_bpb: `1.600924`
+- training_seconds: `300.2`
+- total_seconds: `505.7`
+- memory_gb: `0.0`
+- Hypothesis: the lm_head may need a stronger signal in the depth-2 regime given fewer parameters total
+- Next move: if worse, 0.005 is still correct; if better, the pattern has shifted
