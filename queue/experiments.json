@@ -1,75 +1,75 @@
 [
   {
-    "commit_message": "Try GELU activation instead of ReLU^2",
-    "description": "replace F.relu(x).square() with F.gelu(x) in MLP",
-    "hypothesis": "GELU is smoother and may converge better for depth-2 with ~170 steps; ReLU^2 is tuned for longer runs",
-    "next_move": "if worse, ReLU^2 is better for this task; if better, consider SiLU as well",
+    "commit_message": "Narrow MLP to 2x expansion",
+    "description": "change MLP from 3x to 2x hidden dimension expansion",
+    "hypothesis": "4x→3x barely helped; 2x may give more optimizer steps at the cost of less MLP capacity",
+    "next_move": "if better, the trend is real; if worse, 3x is the sweet spot",
     "replacements": [
       {
-        "old": "        x = F.relu(x).square()",
-        "new": "        x = F.gelu(x)"
-      }
-    ]
-  },
-  {
-    "commit_message": "Narrow MLP to 3x expansion",
-    "description": "change MLP from 4x to 3x hidden dimension expansion",
-    "hypothesis": "fewer MLP parameters = faster forward pass = more optimizer steps in 5 min — same logic that made depth=2 beat depth=3",
-    "next_move": "if better, try 2x; if worse, 4x is right",
-    "replacements": [
-      {
-        "old": "4 * config.n_embd",
-        "new": "3 * config.n_embd",
+        "old": "3 * config.n_embd",
+        "new": "2 * config.n_embd",
         "count": 2
       }
     ]
   },
   {
-    "commit_message": "Add gradient clipping at 1.0",
-    "description": "add torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0) before optimizer.step()",
-    "hypothesis": "no gradient clipping is currently applied; clipping at 1.0 may stabilize Adam param updates and improve convergence",
-    "next_move": "if better, try tighter clip at 0.5; if worse, the model is stable enough without clipping",
-    "replacements": [
-      {
-        "old": "    optimizer.step()\n    model.zero_grad(set_to_none=True)",
-        "new": "    torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)\n    optimizer.step()\n    model.zero_grad(set_to_none=True)"
-      }
-    ]
-  },
-  {
-    "commit_message": "HEAD_DIM=64 depth-2 model — 3 heads, model_dim=192",
-    "description": "change HEAD_DIM from 128 to 64; model_dim becomes 192 with 3 attention heads",
-    "hypothesis": "more attention heads with smaller dim may help the 2-layer model attend to more diverse patterns; model_dim shrinks slightly giving even more steps",
-    "next_move": "if better, tune LRs for this config; if worse, 2-head 256-dim is optimal",
-    "replacements": [
-      {
-        "old": "HEAD_DIM = 128          # target head dimension for attention",
-        "new": "HEAD_DIM = 64           # target head dimension for attention"
-      }
-    ]
-  },
-  {
-    "commit_message": "Wider MLP 6x expansion on depth-2",
-    "description": "change MLP from 4x to 6x hidden dimension expansion",
-    "hypothesis": "depth-2 has fewer layers but with more steps; a wider MLP per layer might compensate for the lack of depth with more capacity per block",
-    "next_move": "if better, depth-2 benefits from wider MLPs; if worse, 4x is well-calibrated",
-    "replacements": [
-      {
-        "old": "4 * config.n_embd",
-        "new": "6 * config.n_embd",
-        "count": 2
-      }
-    ]
-  },
-  {
-    "commit_message": "MQA: n_kv_head=1 for depth-2",
-    "description": "change n_kv_head from num_heads to 1 in build_model_config — multi-query attention with 1 shared KV head",
-    "hypothesis": "MQA reduces KV parameters; the saved capacity and compute may allow more effective steps in the 5-min budget",
-    "next_move": "if better, MQA suits the short-run regime; if worse, full per-head KV is needed",
+    "commit_message": "MQA: n_kv_head=1 on depth-2 3x-MLP model",
+    "description": "change n_kv_head from num_heads (2) to 1 in build_model_config",
+    "hypothesis": "single shared KV head saves parameters and compute; may allow more steps and better generalization",
+    "next_move": "if better, MQA works well for the short-run regime; if worse, 2 KV heads is needed",
     "replacements": [
       {
         "old": "        n_layer=depth, n_head=num_heads, n_kv_head=num_heads, n_embd=model_dim,",
         "new": "        n_layer=depth, n_head=num_heads, n_kv_head=1, n_embd=model_dim,"
+      }
+    ]
+  },
+  {
+    "commit_message": "Lower RoPE base to 2000",
+    "description": "change RoPE base frequency from 10000 to 2000",
+    "hypothesis": "base=10000 is standard for long-context models; with MAX_SEQ_LEN=2048 a lower base may better concentrate position information in the useful range",
+    "next_move": "if better, try 500; if worse, 10000 is fine for this context length",
+    "replacements": [
+      {
+        "old": "    def _precompute_rotary_embeddings(self, seq_len, head_dim, base=10000, device=None):",
+        "new": "    def _precompute_rotary_embeddings(self, seq_len, head_dim, base=2000, device=None):"
+      }
+    ]
+  },
+  {
+    "commit_message": "Retry TOTAL_BATCH_SIZE=2^15 on tuned depth-2 model",
+    "description": "halve TOTAL_BATCH_SIZE from 2^16 to 2^15, eliminating gradient accumulation and doubling optimizer steps",
+    "hypothesis": "was bad on depth-4 baseline; with tuned depth-2 and 3x MLP the extra steps may now outweigh the noisier gradients",
+    "next_move": "if still worse, 2^16 is correct for this model size; if better, the step-count advantage dominates",
+    "replacements": [
+      {
+        "old": "TOTAL_BATCH_SIZE = 2**16 # ~65K tokens per optimizer step",
+        "new": "TOTAL_BATCH_SIZE = 2**15 # ~32K tokens per optimizer step"
+      }
+    ]
+  },
+  {
+    "commit_message": "Raise MATRIX_LR to 0.04 on 3x MLP model",
+    "description": "retry MATRIX_LR=0.04 on the 3x MLP checkpoint (previously tested on 4x MLP)",
+    "hypothesis": "3x MLP changes forward dynamics; Muon may now tolerate a slightly higher LR",
+    "next_move": "if better, the MLP change shifted the optimal MATRIX_LR; if worse, 0.035 is still correct",
+    "replacements": [
+      {
+        "old": "MATRIX_LR = 0.035       # learning rate for matrix parameters (Muon)",
+        "new": "MATRIX_LR = 0.040       # learning rate for matrix parameters (Muon)"
+      }
+    ]
+  },
+  {
+    "commit_message": "Widen MLP to 5x expansion",
+    "description": "change MLP from 3x to 5x hidden dimension expansion",
+    "hypothesis": "depth-2 has only 2 blocks; a wider MLP may compensate for less depth with more per-layer capacity",
+    "next_move": "if better, more capacity per block wins over compute savings; try 6x",
+    "replacements": [
+      {
+        "old": "3 * config.n_embd",
+        "new": "5 * config.n_embd",
+        "count": 2
       }
     ]
   }
