@@ -766,3 +766,15 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: more attention heads with smaller dim may help the 2-layer model attend to more diverse patterns; model_dim shrinks slightly giving even more steps
 - Next move: if better, tune LRs for this config; if worse, 2-head 256-dim is optimal
+
+## Driver Run: 2026-04-23T12:34:07
+- Commit: `4c69bfd`
+- Experiment: change MLP from 3x to 2x hidden dimension expansion
+- Status: discard
+- Log: `001-4c69bfd.log`
+- val_bpb: `1.574627`
+- training_seconds: `300.4`
+- total_seconds: `511.2`
+- memory_gb: `0.0`
+- Hypothesis: 4x→3x barely helped; 2x may give more optimizer steps at the cost of less MLP capacity
+- Next move: if better, the trend is real; if worse, 3x is the sweet spot
