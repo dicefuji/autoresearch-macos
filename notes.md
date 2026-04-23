@@ -710,3 +710,11 @@ This file is the running journal for the VC-associate autoresearch loop. It is a
 - memory_gb: `0.0`
 - Hypothesis: 0.35 and 0.40 were close (1.562 vs 1.527); 0.38 may be near the optimum in this narrow band
 - Next move: if better than 0.35, the sweet spot is between 0.35 and 0.40
+
+## Driver Run: 2026-04-23T02:37:40
+- Commit: `e37b31b`
+- Experiment: raise DEVICE_BATCH_SIZE from 16 to 32 so grad_accum_steps becomes 1 (single forward pass per step)
+- Status: crash
+- Log: `006-e37b31b.log`
+- Hypothesis: removing gradient accumulation may be faster on MPS and give slightly cleaner optimizer behavior with no multi-step gradient approximation
+- Next move: if OOM or worse, keep DEVICE_BATCH_SIZE=16; if better, MPS benefits from larger single batches

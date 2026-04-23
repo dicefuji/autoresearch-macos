@@ -55,3 +55,4 @@ e42e37e	1.529672	0.0	discard	raise MATRIX_LR from 0.035 to 0.04 — continuing t
 7494da1	1.560370	0.0	discard	try MATRIX_LR=0.038 between the kept 0.035 and the failed 0.040
 4cb12f4	1.536203	0.0	discard	try EMBEDDING_LR=0.42 between the current 0.45 and failed 0.40
 ddf3bc6	1.529415	0.0	discard	try WARMDOWN_RATIO=0.38 between the kept 0.35 and failed 0.40
+e37b31b	0.000000	0.0	crash	raise DEVICE_BATCH_SIZE from 16 to 32 so grad_accum_steps becomes 1 (single forward pass per step)
